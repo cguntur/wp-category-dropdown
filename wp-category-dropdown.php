@@ -10,7 +10,7 @@ Text Domain: wpcd
 */
 
 //Required Files
-require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
+//require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
 
 
 //Create a shortcode to display the categories dropdown
