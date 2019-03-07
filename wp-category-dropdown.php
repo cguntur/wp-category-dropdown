@@ -1,0 +1,124 @@
+<?php
+/*
+Plugin Name: WordPress Category Dropdown
+Plugin URI: http://www.gcsdesign.com
+Description: The plugin loads sub category dropdown based on the selected parent category
+Version: 1.0
+Author: Chandrika Guntur
+Author URI: http://www.gcsdesign.com
+Text Domain: wpcd
+*/
+
+//Required Files
+require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
+
+
+//Create a shortcode to display the categories dropdown
+function wpcd_child_category_dropdown( $atts ) {
+	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery') );
+
+  wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+
+  wp_enqueue_script( 'jquery' );
+  wp_enqueue_script('wpcd-scripts');
+
+	// Set our default attributes
+	extract( shortcode_atts(
+		array(
+		'orderby' => 'name', // options: date, modified, menu_order, rand
+		'order' => 'ASC',
+		'showcount' => 0,
+		'hierarchical' => 1,
+		'hide_empty' => 1, //can be 0
+		'exclude' => '',
+		'default_option_text'	=> 'Parent Category',
+		'default_option_sub'	=> 'Child Category',
+		'category'	=>	'category'
+		), $atts )
+	);
+
+	$taxonomy = $category;
+	$args = array(
+		'taxonomy' => $taxonomy,
+		'orderby' => $orderby,
+		'order' => $order,
+		'show_count' => $showcount,
+		'hierarchical' => $hierarchical,
+		'hide_empty' => $hide_empty,
+		'child_of' => 0,
+		'depth'	=> 1,
+		'exclude' => $exclude,
+		'echo' => 0,
+		'title_li' => '',
+		'name'	=> 'wpcd_parent',
+		'id'	=>	'wpcd_parent',
+		'show_option_none'	=> $default_option_text,
+	);
+
+  $categories = wp_dropdown_categories($args);
+	//This div is hidden and has the default option text for hte sub category dropdown.
+	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
+	//This hidden div has the taxonomy mentioned in the shortcode.
+	$categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
+	//This div will show when the Ajax is working. You can also use a gif instead of text.
+	$categories .= '<div id="wpcd_child_cat_loader">Loading....</div>';
+	//This is the div where the child category dropdown is populated
+	$categories .= '<div id="child_cat_dropdown"></div>';
+  return $categories;
+}
+add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' );
+
+function wpcd_show_child_cat_dropdown(){
+	if (isset($_GET['parent_cat'])) {
+    $parent_cat = $_GET['parent_cat'];
+  }
+
+	if(isset($_GET['child_cat_default_text'])){
+		$child_cat_default_text = $_GET['child_cat_default_text'];
+	}
+
+	if(isset($_GET['taxonomy'])){
+		$taxonomy = $_GET['taxonomy'];
+	}else{
+		$taxonomy = 'category';
+	}
+
+	if($parent_cat == ''){
+		$response = "No category selected";
+	}else{
+		$args = array(
+			'taxonomy' => $taxonomy,
+			'orderby' => 'name',
+			'order' => 'ASC',
+			'show_count' => 0,
+			'hierarchical' => 1,
+			'hide_empty' => 0,
+			'child_of' => $parent_cat,
+			'echo' => 0,
+			'title_li' => '',
+			'name'	=> 'wpcd_child',
+			'id'	=>	'wpcd_child',
+			'show_option_none'	=> $child_cat_default_text,
+			'value_field'      => 'slug'
+		);
+
+		$cat_url = home_url() . "/" . $taxonomy;
+
+		$response = wp_dropdown_categories($args);
+		?>
+		<script type="javascript">
+		$("#wpcd_child").change(function(){
+			var selected_cat = $(this).val();
+			var cat_url_base = "<?php echo $cat_url; ?>";
+			var cat_url = cat_url_base + '/' + selected_cat;
+			//alert(cat_url);
+			window.location.replace(cat_url);
+		});
+		</script>
+		<?php
+	}
+	die($response);
+}
+add_action("wp_ajax_wpcd_show_child_cat_dropdown", "wpcd_show_child_cat_dropdown");
+add_action("wp_ajax_nopriv_wpcd_show_child_cat_dropdown", "wpcd_show_child_cat_dropdown");
+?>
