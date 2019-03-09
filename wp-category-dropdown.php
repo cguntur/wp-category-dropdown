@@ -58,11 +58,9 @@ function wpcd_child_category_dropdown( $atts ) {
 	);
 
   $categories = wp_dropdown_categories($args);
-	//This div is hidden and has the default option text for hte sub category dropdown.
+	//The following div's are hidden
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
-	//This hidden div has the taxonomy mentioned in the shortcode.
 	$categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
-	//This div will show when the Ajax is working. You can also use a gif instead of text.
 	$categories .= '<div id="wpcd_child_cat_loader">Loading....</div>';
 	//This is the div where the child category dropdown is populated
 	$categories .= '<div id="child_cat_dropdown"></div>';
