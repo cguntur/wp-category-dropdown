@@ -31,6 +31,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'hierarchical' => 1,
 		'hide_empty' => 1, //can be 0
 		'exclude' => '',
+		'include' => '',		
 		'default_option_text'	=> 'Parent Category',
 		'default_option_sub'	=> 'Child Category',
 		'category'	=>	'category'
@@ -48,6 +49,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'child_of' => 0,
 		'depth'	=> 1,
 		'exclude' => $exclude,
+		'include' => $include,
 		'echo' => 0,
 		'title_li' => '',
 		'name'	=> 'wpcd_parent',
