@@ -32,8 +32,8 @@ function wpcd_child_category_dropdown( $atts ) {
 		'hide_empty' => 1, //can be 0
 		'exclude' => '',
 		'include' => '',		
-		'default_option_text'	=> 'Parent Category',
-		'default_option_sub'	=> 'Child Category',
+		'default_option_text'	=> __('Parent Category', 'wpcd'),
+		'default_option_sub'	=> __('Child Category', 'wpcd'),
 		'category'	=>	'category'
 		), $atts )
 	);
