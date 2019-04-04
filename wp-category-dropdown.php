@@ -10,12 +10,14 @@ Text Domain: wpcd
 */
 
 //Required Files
-//require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
 
 
 //Create a shortcode to display the categories dropdown
 function wpcd_child_category_dropdown( $atts ) {
+	//header("Content-Type: application/javascript");
 	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery') );
+	wp_localize_script("wpcd-scripts", 'wpcdHome', array('homeUrl' => esc_url(home_url() ) ) );
 
   wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
@@ -31,7 +33,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'hierarchical' => 1,
 		'hide_empty' => 1, //can be 0
 		'exclude' => '',
-		'include' => '',		
+		'include'	=> '',
 		'default_option_text'	=> __('Parent Category', 'wpcd'),
 		'default_option_sub'	=> __('Child Category', 'wpcd'),
 		'category'	=>	'category'
@@ -49,7 +51,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'child_of' => 0,
 		'depth'	=> 1,
 		'exclude' => $exclude,
-		'include' => $include,
+		'include'	=> $include,
 		'echo' => 0,
 		'title_li' => '',
 		'name'	=> 'wpcd_parent',
@@ -58,9 +60,11 @@ function wpcd_child_category_dropdown( $atts ) {
 	);
 
   $categories = wp_dropdown_categories($args);
-	//The following div's are hidden
+	//This div is hidden and has the default option text for hte sub category dropdown.
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
+	//This hidden div has the taxonomy mentioned in the shortcode.
 	$categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
+	//This div will show when the Ajax is working. You can also use a gif instead of text.
 	$categories .= '<div id="wpcd_child_cat_loader">Loading....</div>';
 	//This is the div where the child category dropdown is populated
 	$categories .= '<div id="child_cat_dropdown"></div>';
@@ -73,19 +77,37 @@ function wpcd_show_child_cat_dropdown(){
     $parent_cat = $_GET['parent_cat'];
   }
 
+	$parent_category = get_term($parent_cat);
+	$parent_cat_slug = $parent_category->slug;
+
 	if(isset($_GET['child_cat_default_text'])){
 		$child_cat_default_text = $_GET['child_cat_default_text'];
 	}
-
 	if(isset($_GET['taxonomy'])){
 		$taxonomy = $_GET['taxonomy'];
 	}else{
 		$taxonomy = 'category';
 	}
 
+	$cat_has_child = get_term_children($parent_cat, $taxonomy);
+
 	if($parent_cat == ''){
 		$response = "No category selected";
+	}else if(empty($cat_has_child)){
+		//If the selected category does not have a child, the user will be redirected to the category page
+		?>
+		<script type="javascript">
+		<?php
+			$cat_url = home_url() . "/" . $taxonomy;
+			?>
+			var cat_url_base = "<?php echo $cat_url; ?>";
+			var current_cat_slug = "<?php echo $parent_cat_slug; ?>";
+			var cat_url = cat_url_base + '/' + current_cat_slug;
+			window.location.replace(cat_url);
+		</script>
+		<?php
 	}else{
+		//If the selected category has a child category, then a second dropdown is displayed
 		$args = array(
 			'taxonomy' => $taxonomy,
 			'orderby' => 'name',
@@ -101,9 +123,7 @@ function wpcd_show_child_cat_dropdown(){
 			'show_option_none'	=> $child_cat_default_text,
 			'value_field'      => 'slug'
 		);
-
 		$cat_url = home_url() . "/" . $taxonomy;
-
 		$response = wp_dropdown_categories($args);
 		?>
 		<script type="javascript">
@@ -119,6 +139,7 @@ function wpcd_show_child_cat_dropdown(){
 	}
 	die($response);
 }
+
 add_action("wp_ajax_wpcd_show_child_cat_dropdown", "wpcd_show_child_cat_dropdown");
 add_action("wp_ajax_nopriv_wpcd_show_child_cat_dropdown", "wpcd_show_child_cat_dropdown");
 ?>
