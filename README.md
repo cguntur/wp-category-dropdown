@@ -17,3 +17,7 @@ Here are the options available with the shortcode:
 * category
 
 You can read more about the options here - https://developer.wordpress.org/reference/functions/wp_dropdown_categories/
+
+You can also use a widget to display the dropdown on the sidebar.
+
+Please note that the shortcode and the widget cannot be used on the same page. 
