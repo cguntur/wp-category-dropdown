@@ -22,7 +22,6 @@ class Category_Dropdown_Widget extends WP_Widget {
 		}
 
 		$atts = array(
-			//'orderby' => 'name', // options: date, modified, menu_order, rand
 			'orderby' => $instance['wpcd_cat_orderby'],
 			'order' => $instance['wpcd_cat_order'],
 			'showcount' => $instance['wpcd_showcount'],
