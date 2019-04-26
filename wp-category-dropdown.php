@@ -95,6 +95,11 @@ function wpcd_show_child_cat_dropdown(){
 		$response = "No category selected";
 	}else if(empty($cat_has_child)){
 		//If the selected category does not have a child, the user will be redirected to the category page
+		if ( $taxonomy == "product_cat" ) {
+			$wc_permalinks = get_option( 'woocommerce_permalinks' );
+			$category_base = $wc_permalinks['category_base'];
+			$taxonomy = $category_base;
+		}
 		?>
 		<script type="javascript">
 		<?php
@@ -123,6 +128,11 @@ function wpcd_show_child_cat_dropdown(){
 			'show_option_none'	=> $child_cat_default_text,
 			'value_field'      => 'slug'
 		);
+		if ( $taxonomy == "product_cat" ) {
+			$wc_permalinks = get_option( 'woocommerce_permalinks' );
+			$category_base = $wc_permalinks['category_base'];
+			$taxonomy = $category_base;
+		}
 		$cat_url = home_url() . "/" . $taxonomy;
 		$response = wp_dropdown_categories($args);
 		?>
