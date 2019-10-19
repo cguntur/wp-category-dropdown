@@ -9,7 +9,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 	public function __construct() {
 		$widget_ops = array(
 		'classname' => 'wcpd_category_dropdown_widget',
-		'description' => 'A widget to display parent and child categories in a dropdown.',
+		'description' => __('A widget to display parent and child categories in a dropdown.', 'wpcd'),
 	);
 	parent::__construct( 'wpcd_category_dropdown_widget', 'Category Dropdown Widget', $widget_ops );
 	}
@@ -43,9 +43,9 @@ class Category_Dropdown_Widget extends WP_Widget {
 	public function form( $instance ) {
 		/* Set up some default widget settings. */
 		$defaults = array(
-			'title' => __( 'Categories', 'cdash' ),
-			'parent_default_option' => 'Select a Parent Category',
-			'child_default_option' => 'Select a Child Category',
+			'title' => __( 'Categories', 'wpcd' ),
+			'parent_default_option' => __('Select a Parent Category', 'wpcd'),
+			'child_default_option' => __('Select a Child Category', 'wpcd'),
 			'wpcd_cat_orderby'		=> 'name',
 			'wpcd_cat_order'			=> 'ASC',
 			'wpcd_showcount'			=>	0,
@@ -84,33 +84,33 @@ class Category_Dropdown_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'wpcd_cat_order' ); ?>"><?php _e( 'Order', 'wpcd' ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_cat_order'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_cat_order'); ?>" type="text">
-				<option <?php selected( $instance['wpcd_cat_order'], 'ASC'); ?> value="ASC">ASC</option>
-				<option <?php selected( $instance['wpcd_cat_order'], 'DESC'); ?> value="DESC">DESC</option>
+				<option <?php selected( $instance['wpcd_cat_order'], 'ASC'); ?> value="ASC"><?php _e('ASC', 'wpcd');?></option>
+				<option <?php selected( $instance['wpcd_cat_order'], 'DESC'); ?> value="DESC"><?php _e('DESC', 'wpcd');?></option>
 			</select>
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'wpcd_showcount' ); ?>"><?php _e( 'Show the number of posts in the category', 'wpcd' ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_showcount'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_showcount'); ?>">
-				<option <?php selected( $instance['wpcd_showcount'], '1'); ?> value="1">Yes</option>
-				<option <?php selected( $instance['wpcd_showcount'], '0'); ?> value="0">No</option>
+				<option <?php selected( $instance['wpcd_showcount'], '1'); ?> value="1"><?php _e('Yes', 'wpcd');?></option>
+				<option <?php selected( $instance['wpcd_showcount'], '0'); ?> value="0"><?php _e('No', 'wpcd');?></option>
 			</select>
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'wpcd_hide_empty' ); ?>"><?php _e( 'Hide the categories without any posts', 'wpcd' ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_hide_empty'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_hide_empty'); ?>">
-				<option <?php selected( $instance['wpcd_hide_empty'], '1'); ?> value="1">Yes</option>
-				<option <?php selected( $instance['wpcd_hide_empty'], '0'); ?> value="0">No</option>
+				<option <?php selected( $instance['wpcd_hide_empty'], '1'); ?> value="1"><?php _e('Yes', 'wpcd');?></option>
+				<option <?php selected( $instance['wpcd_hide_empty'], '0'); ?> value="0"><?php _e('No', 'wpcd');?></option>
 			</select>
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'wpcd_select_category' ); ?>"><?php _e( 'Select a Category', 'wpcd' ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_select_category'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_select_category'); ?>" type="text">
-				<option <?php selected($instance['wpcd_select_category'], 'category'); ?> value="category">Categories</option>
+				<option <?php selected($instance['wpcd_select_category'], 'category'); ?> value="category"><?php _e('Categories', 'wpcd'); ?></option>
 				<?php
-					$args=array('public'   => true, '_builtin'	=> false);
+					$args=array('public'   => true, '_builtin'	=> false, 'show_tagcloud'	=> true);
 					$output = 'objects';
 					$operator = 'and';
 					$taxonomies = get_taxonomies($args,$output,$operator);

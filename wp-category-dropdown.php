@@ -12,6 +12,24 @@ Text Domain: wpcd
 //Required Files
 require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
 
+register_activation_hook(__FILE__, 'wpcd_set_plugin_active');
+
+//Setting the transiet variable when plugin is active
+function wpcd_set_plugin_active(){
+    set_transient('wpcd_active', 'true');
+}
+
+//Adding settings link on the plugins page
+function wpcd_plugin_action_links( $links ) {
+  //Check transient. If it is available, display the settings and license link
+  if(get_transient('wpcd_active')){
+    $docs_url = "https://www.gcsdesign.com/wp-category-dropdown/";
+    $docs_link = '<a href="' . $docs_url . '" target="_blank">' . __('Documentation', 'wpcd') . '</a>';
+    array_unshift( $links, $docs_link );
+  }
+  return $links;
+}
+add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wpcd_plugin_action_links' );
 
 //Create a shortcode to display the categories dropdown
 function wpcd_child_category_dropdown( $atts ) {
@@ -74,17 +92,22 @@ add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' 
 
 function wpcd_show_child_cat_dropdown(){
 	if (isset($_GET['parent_cat'])) {
-    $parent_cat = $_GET['parent_cat'];
+    $parent_cat = sanitize_text_field($_GET['parent_cat']);
+		$parent_cat = intval($parent_cat);
   }
 
 	$parent_category = get_term($parent_cat);
 	$parent_cat_slug = $parent_category->slug;
 
 	if(isset($_GET['child_cat_default_text'])){
-		$child_cat_default_text = $_GET['child_cat_default_text'];
+		$child_cat_default_text = sanitize_text_field($_GET['child_cat_default_text']);
 	}
+
 	if(isset($_GET['taxonomy'])){
-		$taxonomy = $_GET['taxonomy'];
+		$taxonomy = sanitize_text_field($_GET['taxonomy']);
+		if(!term_exists($taxonomy)){
+			$taxonomy = 'category';
+		}
 	}else{
 		$taxonomy = 'category';
 	}
@@ -141,7 +164,6 @@ function wpcd_show_child_cat_dropdown(){
 			var selected_cat = $(this).val();
 			var cat_url_base = "<?php echo $cat_url; ?>";
 			var cat_url = cat_url_base + '/' + selected_cat;
-			//alert(cat_url);
 			window.location.replace(cat_url);
 		});
 		</script>
