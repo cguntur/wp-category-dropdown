@@ -6,6 +6,7 @@ Description: The plugin loads sub category dropdown based on the selected parent
 Version: 1.2
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
+Plugin URI: https://www.gcsdesign.com/wp_category_dropdown
 Text Domain: wpcd
 */
 
@@ -34,7 +35,7 @@ add_action( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wpcd_plugin_a
 //Create a shortcode to display the categories dropdown
 function wpcd_child_category_dropdown( $atts ) {
 	//header("Content-Type: application/javascript");
-	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery') );
+	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery'), null );
 	wp_localize_script("wpcd-scripts", 'wpcdHome', array('homeUrl' => esc_url(home_url() ) ) );
 
     wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
@@ -93,9 +94,9 @@ add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' 
 
 function wpcd_show_child_cat_dropdown(){
 	if (isset($_GET['parent_cat'])) {
-    $parent_cat = sanitize_text_field($_GET['parent_cat']);
+        $parent_cat = sanitize_text_field($_GET['parent_cat']);
 		$parent_cat = intval($parent_cat);
-  }
+    }
 
 	if(isset($_GET['child_cat_default_text'])){
 		$child_cat_default_text = sanitize_text_field($_GET['child_cat_default_text']);
