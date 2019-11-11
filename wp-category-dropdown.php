@@ -3,7 +3,7 @@
 Plugin Name: WordPress Category Dropdown
 Plugin URI: http://www.gcsdesign.com
 Description: The plugin loads sub category dropdown based on the selected parent category
-Version: 1.0
+Version: 1.1
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: wpcd
@@ -87,6 +87,7 @@ function wpcd_child_category_dropdown( $atts ) {
 	//This is the div where the child category dropdown is populated
 	$categories .= '<div id="child_cat_dropdown"></div>';
   return $categories;
+	//$first_call = FALSE;
 }
 add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' );
 
@@ -96,21 +97,21 @@ function wpcd_show_child_cat_dropdown(){
 		$parent_cat = intval($parent_cat);
   }
 
-	$parent_category = get_term($parent_cat);
-	$parent_cat_slug = $parent_category->slug;
-
 	if(isset($_GET['child_cat_default_text'])){
 		$child_cat_default_text = sanitize_text_field($_GET['child_cat_default_text']);
 	}
 
 	if(isset($_GET['taxonomy'])){
 		$taxonomy = sanitize_text_field($_GET['taxonomy']);
-		if(!term_exists($taxonomy)){
+		if(!taxonomy_exists($taxonomy)){
 			$taxonomy = 'category';
 		}
 	}else{
 		$taxonomy = 'category';
 	}
+
+    $parent_category = get_term($parent_cat, $taxonomy);
+	$parent_cat_slug = $parent_category->slug;
 
 	$cat_has_child = get_term_children($parent_cat, $taxonomy);
 

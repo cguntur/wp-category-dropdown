@@ -50,7 +50,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 			'wpcd_cat_order'			=> 'ASC',
 			'wpcd_showcount'			=>	0,
 			'wpcd_hide_empty'			=> 0,
-			'wpcd_select_category'=>	'businesss_category'
+			'wpcd_select_category'=>	''
 
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
