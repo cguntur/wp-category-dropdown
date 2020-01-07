@@ -124,10 +124,21 @@ function wpcd_show_child_cat_dropdown(){
 			$category_base = $wc_permalinks['category_base'];
 			$taxonomy = $category_base;
 		}
+        //If there is a custom category base set, get that from the options
+        $category_base = get_option('category_base');
+        if(isset($category_base) && $category_base != ''){
+            $taxonomy = $category_base;
+        }
 		?>
 		<script type="javascript">
 		<?php
 			$cat_url = home_url() . "/" . $taxonomy;
+			/*if($taxonomy == 'category'){
+				$cat_url = get_category_link($parent_cat_slug);
+			}else{
+				$cat_url = get_term_link($parent_cat_slug);
+			}*/
+
 			?>
 			var cat_url_base = "<?php echo $cat_url; ?>";
 			var current_cat_slug = "<?php echo $parent_cat_slug; ?>";
@@ -157,6 +168,12 @@ function wpcd_show_child_cat_dropdown(){
 			$category_base = $wc_permalinks['category_base'];
 			$taxonomy = $category_base;
 		}
+
+        $category_base = get_option('category_base');
+        if(isset($category_base) && $category_base != ''){
+            $taxonomy = $category_base;
+        }
+        
 		$cat_url = home_url() . "/" . $taxonomy;
 		$response = wp_dropdown_categories($args);
 		?>
