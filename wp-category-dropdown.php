@@ -3,7 +3,7 @@
 Plugin Name: WordPress Category Dropdown
 Plugin URI: http://www.gcsdesign.com
 Description: The plugin loads sub category dropdown based on the selected parent category
-Version: 1.1
+Version: 1.2
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Text Domain: wpcd
@@ -37,7 +37,7 @@ function wpcd_child_category_dropdown( $atts ) {
 	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery') );
 	wp_localize_script("wpcd-scripts", 'wpcdHome', array('homeUrl' => esc_url(home_url() ) ) );
 
-  wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+    wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
   wp_enqueue_script( 'jquery' );
   wp_enqueue_script('wpcd-scripts');
@@ -125,10 +125,13 @@ function wpcd_show_child_cat_dropdown(){
 			$taxonomy = $category_base;
 		}
         //If there is a custom category base set, get that from the options
-        $category_base = get_option('category_base');
-        if(isset($category_base) && $category_base != ''){
-            $taxonomy = $category_base;
+        if($taxonomy == 'category'){
+            $category_base = get_option('category_base');
+            if(isset($category_base) && $category_base != ''){
+                $taxonomy = $category_base;
+            }
         }
+
 		?>
 		<script type="javascript">
 		<?php
@@ -169,11 +172,13 @@ function wpcd_show_child_cat_dropdown(){
 			$taxonomy = $category_base;
 		}
 
-        $category_base = get_option('category_base');
-        if(isset($category_base) && $category_base != ''){
-            $taxonomy = $category_base;
+        if($taxonomy == 'category'){
+            $category_base = get_option('category_base');
+            if(isset($category_base) && $category_base != ''){
+                $taxonomy = $category_base;
+            }
         }
-        
+
 		$cat_url = home_url() . "/" . $taxonomy;
 		$response = wp_dropdown_categories($args);
 		?>
