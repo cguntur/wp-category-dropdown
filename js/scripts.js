@@ -4,7 +4,6 @@ jQuery(document).ready(function($){
     var parent_cat = $(this).val();
     var child_cat_default_text = $("#child_cat_default_text").text();
     var taxonomy = $("#taxonomy").text();
-    alert(parent_cat);
     $.ajax({
       url: wpcdajax.ajaxurl,
       type:'GET',

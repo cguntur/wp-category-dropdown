@@ -1,12 +1,12 @@
 jQuery(document).ready(function($){
-    $(".wpcd_widget_dropdown_loader, .wpcd_exclude_cat_field_id,.wpcd_exclude_cat_field_name").css("display", "none");
+    //$(".wpcd_widget_dropdown_loader, .wpcd_exclude_cat_field_id,.wpcd_exclude_cat_field_name").css("display", "none");
     $(".wpcd_select_category").change(function(){
-        //alert("hello");
+        alert("hello");
         var selected_cat = $(this).val();
         var exclude_cat_field_id = $(".wpcd_exclude_cat_field_id").text();
         var exclude_cat_field_name = $(".wpcd_exclude_cat_field_name").text();
-        //var url = "<?php echo admin_url('admin-ajax.php'); ?>";
-        //alert("Submitting to URL: " + ajaxurl);
+        var url = "<?php echo admin_url('admin-ajax.php'); ?>";
+        alert("Submitting to URL: " + ajaxurl);
         $(".selected_category").text(selected_cat);
         $.ajax({
             url:ajaxurl,

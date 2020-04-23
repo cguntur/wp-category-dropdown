@@ -67,7 +67,8 @@ class Category_Dropdown_Widget extends WP_Widget {
 			'wpcd_cat_order'			=> 'ASC',
 			'wpcd_showcount'			=>	0,
 			'wpcd_hide_empty'			=> 0,
-			'wpcd_select_category'=>	''
+			'wpcd_select_category'=>	'',
+			'wpcd_exclude_category'	=> ''
 
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
@@ -169,7 +170,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 			<p class="wpcd_exclude_cat_field_name"><?php echo $field_name; ?></p>
 			<p class="selected_cat_sub">
 				<?php
-				$tax_terms = wpcd_display_tax_terms('category', $field_id, $field_name, $exclude_cats_array);
+				$tax_terms = wpcd_display_tax_terms('business_category', $field_id, $field_name, $exclude_cats_array);
 				echo $tax_terms;
 				?>
 			</p>
