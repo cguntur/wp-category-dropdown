@@ -1,16 +1,19 @@
 jQuery(document).ready(function($){
     //$(".wpcd_widget_dropdown_loader, .wpcd_exclude_cat_field_id,.wpcd_exclude_cat_field_name").css("display", "none");
+    $(".wpcd_widget_dropdown_loader").css("display", "none");
     $(".wpcd_select_category").change(function(){
-        alert("hello");
+        //alert("hello");
         var selected_cat = $(this).val();
         var exclude_cat_field_id = $(".wpcd_exclude_cat_field_id").text();
         var exclude_cat_field_name = $(".wpcd_exclude_cat_field_name").text();
         var url = "<?php echo admin_url('admin-ajax.php'); ?>";
-        alert("Submitting to URL: " + ajaxurl);
-        $(".selected_category").text(selected_cat);
+        alert("Selected category: " + selected_cat);
+        //alert("Field ID: " + exclude_cat_field_id);
+        //alert("Field Name: " + exclude_cat_field_name);
+        
         $.ajax({
             url:ajaxurl,
-            type:'GET',
+            type:'POST',
             dataType: 'html',
             data:{
                 'action': 'wpcd_widget_exclude_categories',
@@ -19,10 +22,10 @@ jQuery(document).ready(function($){
                 'exclude_cat_field_name': exclude_cat_field_name
             },
             beforeSend: function() {
-              //$(".wpcd_widget_dropdown_loader").show();
+              $(".wpcd_widget_dropdown_loader").show();
             },
             complete: function(){
-               //$(".wpcd_widget_dropdown_loader").hide();
+               $(".wpcd_widget_dropdown_loader").hide();
             },
             success: function(response){
                 //$(".selected_cat_sub").css("display", "none");
