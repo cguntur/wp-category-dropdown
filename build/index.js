@@ -136,20 +136,30 @@ var orderOptions = [{
   label: 'Descending',
   value: 'desc'
 }];
-var taxonomyList = [{
-  label: 'Select category form the list',
-  value: null
+var fetchUrlAction = wpAjax.wpurl + '/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
+var taxonomyList = [//{ label: 'Select category form the list', value: null },
+{
+  label: 'Categories',
+  value: 'categories'
 }];
 wp.apiFetch({
-  path: "/wp/v2/taxonomies?per_page=100"
-}).then(function (posts) {
-  jQuery.each(posts, function (key, val) {
+  url: fetchUrlAction
+}).then(function (response) {
+  jQuery.each(response, function (key, val) {
     taxonomyList.push({
-      label: val.name,
-      value: val.slug
+      label: val.label,
+      value: val.name
     });
   });
-}).catch();
+});
+/*wp.apiFetch({path: "/wp/v2/taxonomies?per_page=100"}).then(posts => {
+    jQuery.each( posts, function( key, val ) {
+        taxonomyList.push({label: val.name, value: val.rest_base});
+    });
+}).catch( 
+
+)*/
+
 var taxonomyTerms = [{
   label: 'Select one or more terms',
   value: null
@@ -179,7 +189,7 @@ var setTerms = function setTerms(taxonomy) {
     jQuery.each(posts, function (key, val) {
       taxonomyTerms.push({
         label: val.name,
-        value: val.slug
+        value: val.id
       });
     });
     console.log(taxonomyTerms);
@@ -206,8 +216,7 @@ var edit = function edit(props) {
     props.setAttributes({
       category: category
     });
-    setTerms(category);
-    console.log("Selected Category: " + category);
+    setTerms(category); //console.log("Selected Category: " + category);
   };
 
   var excludeCategories = function excludeCategories(exclude) {

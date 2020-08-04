@@ -43,19 +43,26 @@ const orderOptions = [
     { label: 'Descending', value: 'desc' },
 ];
 
-
+var fetchUrlAction = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
 
 const taxonomyList = [
-    { label: 'Select category form the list', value: null }
+    //{ label: 'Select category form the list', value: null },
+    { label: 'Categories', value: 'categories' }
 ];
 
-wp.apiFetch({path: "/wp/v2/taxonomies?per_page=100"}).then(posts => {
+wp.apiFetch({url: fetchUrlAction}).then(response => {
+    jQuery.each( response, function( key, val ) {
+        taxonomyList.push({label: val.label, value: val.name});
+    });
+});
+
+/*wp.apiFetch({path: "/wp/v2/taxonomies?per_page=100"}).then(posts => {
     jQuery.each( posts, function( key, val ) {
-        taxonomyList.push({label: val.name, value: val.slug});
+        taxonomyList.push({label: val.name, value: val.rest_base});
     });
 }).catch( 
 
-)
+)*/
 const taxonomyTerms = [
     { label: 'Select one or more terms', value: null }
 ];
@@ -77,7 +84,7 @@ const setTerms = (taxonomy) => {
     wp.apiFetch({path: "/wp/v2/" + taxonomy + "?per_page=100"}).then(posts => {
         taxonomyTerms.length = 0;
         jQuery.each( posts, function( key, val ) {
-            taxonomyTerms.push({label: val.name, value: val.slug});
+            taxonomyTerms.push({label: val.name, value: val.id});
         });
         console.log(taxonomyTerms);
     }).catch( 
@@ -92,7 +99,7 @@ const edit = props => {
     const setTaxonomy = category => {
         props.setAttributes({category});
         setTerms(category);
-        console.log("Selected Category: " + category);
+        //console.log("Selected Category: " + category);
     };
 
     const excludeCategories = exclude => {

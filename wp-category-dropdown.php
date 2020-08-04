@@ -97,6 +97,10 @@ function wpcd_child_category_dropdown( $atts ) {
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
 	//This hidden div has the taxonomy mentioned in the shortcode.
 	$categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
+	$exclude_cats = implode( ",", $exclude );
+	$include_cats = implode(",",$include);
+	$categories .= '<div id="exclude">' . $exclude_cats . '</div>';
+	$categories .= '<div id="include">' . $include_cats . '</div>';
 	//This div will show when the Ajax is working. You can also use a gif instead of text.
 	$categories .= '<div id="wpcd_child_cat_loader">Loading....</div>';
 	//This is the div where the child category dropdown is populated
@@ -123,6 +127,14 @@ function wpcd_show_child_cat_dropdown(){
 		}
 	}else{
 		$taxonomy = 'category';
+	}
+
+	if(isset($_GET['child_cats_exclude'])){
+		$child_cats_exclude = sanitize_text_field($_GET['child_cats_exclude']);
+	}
+
+	if(isset($_GET['child_cats_include'])){
+		$child_cats_include = sanitize_text_field($_GET['child_cats_include']);
 	}
 
     $parent_category = get_term($parent_cat, $taxonomy);
@@ -179,7 +191,9 @@ function wpcd_show_child_cat_dropdown(){
 			'name'	=> 'wpcd_child',
 			'id'	=>	'wpcd_child',
 			'show_option_none'	=> $child_cat_default_text,
-			'value_field'      => 'slug'
+			'value_field'      => 'slug',
+			'exclude'	=> $child_cats_exclude,
+			'include'	=> $child_cats_include
 		);
 		if ( $taxonomy == "product_cat" ) {
 			$wc_permalinks = get_option( 'woocommerce_permalinks' );
