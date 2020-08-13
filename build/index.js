@@ -137,10 +137,9 @@ var orderOptions = [{
   value: 'desc'
 }];
 var fetchUrlAction = wpAjax.wpurl + '/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
-var taxonomyList = [//{ label: 'Select category form the list', value: null },
-{
+var taxonomyList = [{
   label: 'Categories',
-  value: 'categories'
+  value: 'category'
 }];
 wp.apiFetch({
   url: fetchUrlAction
@@ -152,49 +151,106 @@ wp.apiFetch({
     });
   });
 });
-/*wp.apiFetch({path: "/wp/v2/taxonomies?per_page=100"}).then(posts => {
+/*
+const TaxonomyListSelectControl = withState( {
+    //size: '50%',
+    category: 'category'
+} )( ( { category, setState } ) => (
+    <SelectControl
+        label="Categories"
+        value={ category }
+        options={ taxonomyList }
+        onChange={ ( category ) => { setState( { category } )
+            //setTerms(category),
+            //console.log(category)
+        } }
+    />
+) );
+*/
+//wp.data.select('core').getEntityRecords('taxonomy', 'category');
+
+var allTerms = {}; // const taxonomyTerms = [
+//     {label: "Loading...", value: null}
+// ];
+
+var taxTerms = wpAjax.wpurl + '/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
+wp.apiFetch({
+  url: taxTerms
+}).then(function (response) {
+  //setTimeout(() => {
+  jQuery.each(response, function (key, val) {
+    if (!allTerms[val.taxonomy]) {
+      allTerms[val.taxonomy] = [];
+    }
+
+    allTerms[val.taxonomy].push({
+      label: val.name,
+      value: val.term_id
+    });
+  });
+  console.log(allTerms); //}, 30000);
+});
+/*
+const TaxonomyTermsSelectControl = withState( {
+    //size: '50%',
+    category: 'category'
+} )( ( { category, exclude, setState } ) => (
+    <SelectControl
+        multiple
+        label="Exclude Categories"
+        value={ exclude }
+        options={setTerms(category)}
+        onChange={ ( exclude ) => { setState( { exclude } ) } }
+    />
+) );
+*/
+
+/*const TaxonomyTermsSelectControl = (withSelect( function( select, props ) {
+    return {
+        taxonomyTerms: select( 'core' ).getEntityRecords( 'taxonomy', 'category' ),
+    }
+} )) ( function( props ) {
+
+});*/
+
+/*
+wp.apiFetch({path: "/wp/v2/categories?per_page=100"}).then(posts => {
+    taxonomyTerms.length = 0;
     jQuery.each( posts, function( key, val ) {
-        taxonomyList.push({label: val.name, value: val.rest_base});
+        taxonomyTerms.push({label: val.name, value: val.slug});
     });
 }).catch( 
 
-)*/
+);
+*/
 
-var taxonomyTerms = [{
-  label: 'Select one or more terms',
-  value: null
-}];
-wp.apiFetch({
-  path: "/wp/v2/categories?per_page=100"
-}).then(function (posts) {
-  jQuery.each(posts, function (key, val) {
-    taxonomyTerms.push({
-      label: val.name,
-      value: val.slug
-    });
-  });
-}).catch();
-
-var setTerms = function setTerms(taxonomy) {
-  if (taxonomy == "category") {
-    taxonomy = "categories";
-  } else if (taxonomy == "post_tag") {
-    taxonomy = "tags";
+var getTerms = function getTerms(taxonomy) {
+  /*if(taxonomy == "category"){
+      taxonomy = "categories";
+  }else if(taxonomy == "post_tag"){
+      taxonomy = "tags";
   }
-
-  wp.apiFetch({
-    path: "/wp/v2/" + taxonomy + "?per_page=100"
-  }).then(function (posts) {
-    taxonomyTerms.length = 0;
-    jQuery.each(posts, function (key, val) {
-      taxonomyTerms.push({
-        label: val.name,
-        value: val.id
+  var taxTerms = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action&taxonomy='+taxonomy;
+  console.log(taxTerms);
+  wp.apiFetch({url: taxTerms}).then(response => {
+      taxonomyTerms.length = 0;
+      jQuery.each( response, function( key, val ) {
+          taxonomyTerms.push({label: val.name, value: val.term_id});
       });
-    });
-    console.log(taxonomyTerms);
-  }).catch();
-  return taxonomyTerms;
+      console.log(taxonomyTerms);
+  }).catch( 
+  
+  )
+  //return taxonomyTerms;
+  */
+  if (Array.isArray(allTerms[taxonomy])) {
+    return allTerms[taxonomy];
+  } else {
+    return [{
+      label: "<No Categories Found>",
+      value: null
+    }];
+  }
 };
 
 var edit = function edit(props) {
@@ -210,13 +266,15 @@ var edit = function edit(props) {
       default_option_sub = _props$attributes.default_option_sub,
       category = _props$attributes.category,
       className = props.className,
-      setAttributes = props.setAttributes;
+      setAttributes = props.setAttributes,
+      isSelected = props.isSelected;
 
   var setTaxonomy = function setTaxonomy(category) {
     props.setAttributes({
-      category: category
+      category: category,
+      exclude: [],
+      include: []
     });
-    setTerms(category); //console.log("Selected Category: " + category);
   };
 
   var excludeCategories = function excludeCategories(exclude) {
@@ -268,9 +326,10 @@ var edit = function edit(props) {
       return setAttributes({
         hierarchical: nextValue
       });
-    }
+    },
+    help: hierarchical ? Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Shows only the parent categories in the first dropdown', 'wpcd') : Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Shows all the categories in the first dropdown', 'wpcd')
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["ToggleControl"], {
-    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Show/hide the emtpy categories'),
+    label: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__["__"])('Hide the emtpy categories'),
     checked: hide_empty,
     onChange: function onChange(nextValue) {
       return setAttributes({
@@ -278,7 +337,7 @@ var edit = function edit(props) {
       });
     }
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
-    label: "Category",
+    label: "Categories",
     value: category,
     options: taxonomyList,
     onChange: setTaxonomy
@@ -286,13 +345,13 @@ var edit = function edit(props) {
     multiple: true,
     label: "Exclude Categories",
     value: exclude,
-    options: setTerms(category),
+    options: getTerms(category),
     onChange: excludeCategories
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["SelectControl"], {
     multiple: true,
     label: "Include Categories",
     value: include,
-    options: setTerms(category),
+    options: getTerms(category),
     onChange: includeCategories
   })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["PanelRow"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__["TextControl"], {
     label: "Parent Category Text",

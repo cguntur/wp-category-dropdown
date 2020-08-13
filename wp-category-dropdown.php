@@ -92,7 +92,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'show_option_none'	=> $default_option_text,
 	);
 
-  $categories = wp_dropdown_categories($args);
+  $categories = '<p>'. wp_dropdown_categories($args) . '</p>';
 	//This div is hidden and has the default option text for hte sub category dropdown.
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
 	//This hidden div has the taxonomy mentioned in the shortcode.

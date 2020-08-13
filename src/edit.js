@@ -46,8 +46,7 @@ const orderOptions = [
 var fetchUrlAction = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
 
 const taxonomyList = [
-    //{ label: 'Select category form the list', value: null },
-    { label: 'Categories', value: 'categories' }
+    { label: 'Categories', value: 'category' }
 ];
 
 wp.apiFetch({url: fetchUrlAction}).then(response => {
@@ -56,50 +55,107 @@ wp.apiFetch({url: fetchUrlAction}).then(response => {
     });
 });
 
-/*wp.apiFetch({path: "/wp/v2/taxonomies?per_page=100"}).then(posts => {
-    jQuery.each( posts, function( key, val ) {
-        taxonomyList.push({label: val.name, value: val.rest_base});
-    });
-}).catch( 
+/*
+const TaxonomyListSelectControl = withState( {
+    //size: '50%',
+    category: 'category'
+} )( ( { category, setState } ) => (
+    <SelectControl
+        label="Categories"
+        value={ category }
+        options={ taxonomyList }
+        onChange={ ( category ) => { setState( { category } )
+            //setTerms(category),
+            //console.log(category)
+        } }
+    />
+) );
+*/
 
-)*/
-const taxonomyTerms = [
-    { label: 'Select one or more terms', value: null }
-];
+//wp.data.select('core').getEntityRecords('taxonomy', 'category');
+const allTerms = {};
+// const taxonomyTerms = [
+//     {label: "Loading...", value: null}
+// ];
 
+var taxTerms = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
+wp.apiFetch({url: taxTerms}).then(response => {
+    //setTimeout(() => {
+        jQuery.each( response, function( key, val ) {
+            if (!allTerms[val.taxonomy]) {
+                allTerms[val.taxonomy] = [];
+            }
+            allTerms[val.taxonomy].push({label: val.name, value: val.term_id});
+        });    
+        console.log(allTerms);
+    //}, 30000);
+});
+
+/*
+const TaxonomyTermsSelectControl = withState( {
+    //size: '50%',
+    category: 'category'
+} )( ( { category, exclude, setState } ) => (
+    <SelectControl
+        multiple
+        label="Exclude Categories"
+        value={ exclude }
+        options={setTerms(category)}
+        onChange={ ( exclude ) => { setState( { exclude } ) } }
+    />
+) );
+*/
+
+/*const TaxonomyTermsSelectControl = (withSelect( function( select, props ) {
+    return {
+        taxonomyTerms: select( 'core' ).getEntityRecords( 'taxonomy', 'category' ),
+    }
+} )) ( function( props ) {
+
+});*/
+
+/*
 wp.apiFetch({path: "/wp/v2/categories?per_page=100"}).then(posts => {
+    taxonomyTerms.length = 0;
     jQuery.each( posts, function( key, val ) {
         taxonomyTerms.push({label: val.name, value: val.slug});
     });
 }).catch( 
 
-)
+);
+*/
 
-const setTerms = (taxonomy) => {
-    if(taxonomy == "category"){
+const getTerms = (taxonomy) => {
+    /*if(taxonomy == "category"){
         taxonomy = "categories";
     }else if(taxonomy == "post_tag"){
         taxonomy = "tags";
     }
-    wp.apiFetch({path: "/wp/v2/" + taxonomy + "?per_page=100"}).then(posts => {
+    var taxTerms = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action&taxonomy='+taxonomy;
+    console.log(taxTerms);
+    wp.apiFetch({url: taxTerms}).then(response => {
         taxonomyTerms.length = 0;
-        jQuery.each( posts, function( key, val ) {
-            taxonomyTerms.push({label: val.name, value: val.id});
+        jQuery.each( response, function( key, val ) {
+            taxonomyTerms.push({label: val.name, value: val.term_id});
         });
         console.log(taxonomyTerms);
     }).catch( 
     
     )
-    return taxonomyTerms;
+    //return taxonomyTerms;
+    */
+   if (Array.isArray(allTerms[taxonomy])) {
+       return allTerms[taxonomy];
+   } else {
+       return [{label: "<No Categories Found>", value: null}];
+   }
 };
 
 const edit = props => {
-    const { attributes: {orderby, order, showcount, hierarchical, hide_empty, exclude, include, default_option_text, default_option_sub, category}, className, setAttributes } = props;
+    const { attributes: {orderby, order, showcount, hierarchical, hide_empty, exclude, include, default_option_text, default_option_sub, category}, className, setAttributes, isSelected } = props;
 
     const setTaxonomy = category => {
-        props.setAttributes({category});
-        setTerms(category);
-        //console.log("Selected Category: " + category);
+        props.setAttributes({category, exclude: [], include: []});
     };
 
     const excludeCategories = exclude => {
@@ -149,11 +205,12 @@ const edit = props => {
                         onChange={ ( nextValue ) =>
                             setAttributes( { hierarchical:nextValue } )
                         }
+                        help={ hierarchical ? __('Shows only the parent categories in the first dropdown', 'wpcd') : __('Shows all the categories in the first dropdown', 'wpcd') }
 					/>
                 </PanelRow>
                 <PanelRow>
                     <ToggleControl
-						label={ __( 'Show/hide the emtpy categories' ) }
+						label={ __( 'Hide the emtpy categories' ) }
 						checked={ hide_empty }
                         onChange={ ( nextValue ) =>
                             setAttributes( { hide_empty:nextValue } )
@@ -162,10 +219,10 @@ const edit = props => {
                 </PanelRow>
                 <PanelRow>
                     <SelectControl
-                        label="Category"
+                        label="Categories"
                         value={ category }
-                        options={taxonomyList}
-                        onChange={setTaxonomy}
+                        options={ taxonomyList }
+                        onChange={ setTaxonomy }
                     />
                 </PanelRow>
                 <PanelRow>
@@ -173,7 +230,7 @@ const edit = props => {
                         multiple
                         label="Exclude Categories"
                         value={ exclude }
-                        options={setTerms(category)}
+                        options={ getTerms(category) }
                         onChange={ excludeCategories }
                     />
                 </PanelRow>
@@ -182,7 +239,7 @@ const edit = props => {
                         multiple
                         label = "Include Categories"
                         value = {include}
-                        options = {setTerms(category)}
+                        options = { getTerms(category) }
                         onChange = {includeCategories}
                     />
                 </PanelRow>
