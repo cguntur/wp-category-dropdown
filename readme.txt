@@ -1,10 +1,18 @@
 === WP Category Dropdown ===
 Contributors: cguntur
+<<<<<<< HEAD
 Tags: WordPress Category Dropdown, child category dropdown, Ajax WordPress category, Parent and Child Categories
 Requires at least: 5.0
 Tested up to: 5.2
 Requires PHP: 7.0
 Stable tag: 1.2
+=======
+Tags: WordPress Category Dropdown, Child Category Dropdown, Ajax WordPress category, category, WordPress Categories, Child Categories
+Requires at least: 5.0
+Tested up to: 5.2
+Requires PHP: 7.0
+Stable tag: 1.1
+>>>>>>> Working on adding the exclude category dropdown to the widget
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -39,7 +47,6 @@ You can learn more at [gcsdesign.com/wp_category_dropdown](https://www.gcsdesign
 2. Extract the `wp-category-dropdown` directory to your computer
 3. Upload the `wp-category-dropdown` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
-
 
 == Frequently Asked Questions ==
 = Does the dropdown work with custom taxonomies? =

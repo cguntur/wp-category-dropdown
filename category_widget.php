@@ -20,6 +20,23 @@ class Category_Dropdown_Widget extends WP_Widget {
 		if ( ! empty( $instance['title'] ) ) {
 			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
 		}
+		if(!isset($instance['wpcd_exclude_category']) || empty($instance['wpcd_exclude_category'])) {
+			$instance['wpcd_exclude_category'] = "";
+		}
+		if(isset($instance['wpcd_exclude_category'])){
+			$exclude_cats_array = $instance['wpcd_exclude_category'];
+			if(is_array($exclude_cats_array)){
+				$exclude_cats_string = implode(', ', $exclude_cats_array);
+				$exclude_cats =  $exclude_cats_string;
+			}else{
+				$exclude_cats = $exclude_cats_array;
+			}
+		}else{
+			$exclude_cats_array = '';
+			$exclude_cats = '';
+		}
+
+
 
 		$atts = array(
 			'orderby' => $instance['wpcd_cat_orderby'],
@@ -27,7 +44,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 			'showcount' => $instance['wpcd_showcount'],
 			'hierarchical' => 1,
 			'hide_empty' => $instance['wpcd_hide_empty'],
-			'exclude' => '',
+			'exclude' => $exclude_cats,
 			'default_option_text'	=> $instance['parent_default_option'],
 			'default_option_sub'	=> $instance['child_default_option'],
 			'category'	=>	$instance['wpcd_select_category']
@@ -50,7 +67,8 @@ class Category_Dropdown_Widget extends WP_Widget {
 			'wpcd_cat_order'			=> 'ASC',
 			'wpcd_showcount'			=>	0,
 			'wpcd_hide_empty'			=> 0,
-			'wpcd_select_category'=>	''
+			'wpcd_select_category'=>	'',
+			'wpcd_exclude_category'	=> ''
 
 		);
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
@@ -107,7 +125,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'wpcd_select_category' ); ?>"><?php _e( 'Select a Category', 'wpcd' ); ?></label><br />
-			<select id="<?php echo $this->get_field_id('wpcd_select_category'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_select_category'); ?>" type="text">
+			<select id="<?php echo $this->get_field_id('wpcd_select_category'); ?>" class="widefat wpcd_select_category" name="<?php echo $this->get_field_name('wpcd_select_category'); ?>" type="text">
 				<option <?php selected($instance['wpcd_select_category'], 'category'); ?> value="category"><?php _e('Categories', 'wpcd'); ?></option>
 				<?php
 					$args=array('public'   => true, '_builtin'	=> false, 'show_tagcloud'	=> true);
@@ -126,6 +144,43 @@ class Category_Dropdown_Widget extends WP_Widget {
 			 	?>
 				</select>
 		</p>
+		<p>
+			<?php
+			if(isset($instance['wpcd_exclude_category'])){
+				$exclude_cats_array = $instance['wpcd_exclude_category'];
+				if(is_array($exclude_cats_array)){
+					$exclude_cats_string = implode(', ', $exclude_cats_array);
+					//$exclude_cats = "'" . $exclude_cats_string . "'";
+					$exclude_cats = $exclude_cats_string;
+				}else{
+					$exclude_cats = $exclude_cats_array;
+				}
+			}else{
+				$exclude_cats_array = '';
+				$exclude_cats = '';
+			}
+			
+			?>
+			<label for="<?php echo $this->get_field_id( 'wpcd_exclude_category' ); ?>"><?php _e( 'Exclude Categories', 'wpcd' ); ?></label><br />
+			<?php
+			$field_id = $this->get_field_id("wpcd_exclude_category");
+			$field_name = $this->get_field_name('wpcd_exclude_category');
+			?>
+			<p class="wpcd_exclude_cat_field_id"><?php echo $field_id; ?></p>
+			<p class="wpcd_exclude_cat_field_name"><?php echo $field_name; ?></p>
+			<p class="selected_cat_sub">
+				<?php
+				$tax_terms = "<select>";
+				$tax_terms .= "<option>Option 1</option>";
+				$tax_terms .= "<option>Option 2</option>";
+				$tax_terms .= "</select>";
+				//$tax_terms = wpcd_display_tax_terms('category', $field_id, $field_name, $exclude_cats_array);
+				echo $tax_terms;
+				?>
+			</p>
+			<p class="generate_cat_sub"></p>
+
+		</p>
 <?php
 }
 
@@ -142,8 +197,92 @@ class Category_Dropdown_Widget extends WP_Widget {
 		$instance['wpcd_showcount'] = $new_instance['wpcd_showcount'];
 		$instance['wpcd_hide_empty'] = $new_instance['wpcd_hide_empty'];
 		$instance['wpcd_select_category'] = $new_instance['wpcd_select_category'];
+		$instance['wpcd_exclude_category'] = $new_instance['wpcd_exclude_category'];
 
 		return $instance;
 	}
+}
+
+function wpcd_widget_exclude_categories(){
+	global $wpdb;
+	if(isset($instance['wpcd_exclude_category'])){
+		$exclude_cats_array = $instance['wpcd_exclude_category'];
+		if(is_array($exclude_cats_array)){
+			$exclude_cats_string = implode(', ', $exclude_cats_array);
+			$exclude_cats = $exclude_cats_string;
+		}else{
+			$exclude_cats = $exclude_cats_array;
+		}
+	}else{
+		$exclude_cats_array = '';
+		$exclude_cats = '';
+	}
+	if(isset($_POST['wpcd_exclude_cat_field_id'])){
+		$wpcd_exclude_cat_field_id = $_POST['wpcd_exclude_cat_field_id'];
+	}else{
+		$wpcd_exclude_cat_field_id = '';
+	}
+	if(isset($_POST['wpcd_exclude_cat_field_name'])){
+		$wpcd_exclude_cat_field_name = $_POST['wpcd_exclude_cat_field_name'];
+	}else{
+		$wpcd_exclude_cat_field_name = '';
+	}
+	//$response = 'Initial Response';
+	if (isset($_POST['selected_cat'])) {
+        //$selected_cat = sanitize_text_field($_POST['selected_cat']);
+		$selected_cat = $_POST['selected_cat'];
+		//If there is a custom category base set, get that from the options
+		if($selected_cat == 'category'){
+			$category_base = get_option('category_base');
+			if(isset($category_base) && $category_base != ''){
+				$selected_cat = $category_base;
+			}
+		}
+		if ( $selected_cat == "product_cat" ) {
+			$wc_permalinks = get_option( 'woocommerce_permalinks' );
+			$category_base = $wc_permalinks['category_base'];
+			$selected_cat = $category_base;
+		}
+		$response .= "Selected category: " . $selected_cat . "<br />";
+		//$selected_cat = intval($selected_cat);
+		//$response = $selected_cat;
+		$response .= wpcd_display_tax_terms($selected_cat, $wpcd_exclude_cat_field_id,$wpcd_exclude_cat_field_name, $exclude_cats_array);
+	}else{
+		$selected_cat = '';
+		$response = "No Category Selected";
+	}
+	die($response);
+}
+add_action("wp_ajax_wpcd_widget_exclude_categories", "wpcd_widget_exclude_categories");
+add_action("wp_ajax_nopriv_wpcd_widget_exclude_categories", "wpcd_widget_exclude_categories");
+
+
+function wpcd_display_tax_terms($taxonomy, $field_id, $field_name, $exclude_cats_array){
+	$tax_terms ='';
+	$tax_terms .= "Taxonomy: " . $taxonomy . "<br />";
+	$tax_terms .= '<select multiple="multiple" id="'.$field_id.'" class="widefat cat_sub" name="'.$field_name.'[]" type="text">';
+	$tax_terms .= '<option class="wpcd_widget_dropdown_loader">Lodading....</option>';
+	
+	$terms = get_terms( array(
+		'taxonomy' => $taxonomy
+		//'taxonomy' => 'category'
+	) );
+	print_r($terms);
+	if ( !empty( $terms ) ){
+		foreach ( $terms as $term ) {
+			$id = $term->term_id;
+			if ( is_array($exclude_cats_array) && in_array($term->term_id, $exclude_cats_array) ) {
+    			$selected = "selected='selected'";
+			}else{
+				$selected = 'test';
+			}
+			$value = $term->name;
+			$tax_terms .= '<option value="' . $id . '"' . $selected .'>' . $term->name . '</option>';
+		}
+	}else{
+		$tax_terms .= '<option value="">No categories found</option>';
+	}
+	$tax_terms .= '</select>';
+	return $tax_terms;
 }
 ?>

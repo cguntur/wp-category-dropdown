@@ -1,0 +1,27 @@
+{
+  "name": "wp-category-dropdown",
+  "version": "1.0.0",
+  "description": "Download the zip file and upload it to your WordPress plugins. Activate the plugin.\r You can use the shortocde [wpcd_child_categories_dropdown] to create the dropdown.",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "wp-scripts start",
+    "build": "wp-scripts build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cguntur/wp-category-dropdown.git"
+  },
+  "author": "Chandrika Guntur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cguntur/wp-category-dropdown/issues"
+  },
+  "homepage": "https://github.com/cguntur/wp-category-dropdown#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "12.1.0"
+  },
+  "dependencies": {
+    "npm-upgrade": "^2.0.3"
+  }
+}
