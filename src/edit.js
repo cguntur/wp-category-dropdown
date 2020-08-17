@@ -267,10 +267,11 @@ const edit = props => {
 
     return [
         <div className={ props.className }>
+            <ServerSideRender
+                block="gcs/wp-category-dropdown"
+                attributes = {props.attributes}
+            />
             { inspectorControls }
-            <div id="child_cat_dropdown">
-                The category dropdown should show here.
-            </div>
         </div>
     ];
 };

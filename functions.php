@@ -49,6 +49,16 @@ function wpcd_get_taxonomy_terms(){
     wp_die();
 }
 
-add_action('wp_ajax_wpcd_get_taxonomy_terms_action', wpcd_get_taxonomy_terms);
-add_action('wp_ajax_nopriv_wpcd_get_taxonomy_terms_action', wpcd_get_taxonomy_terms);
+add_action('wp_ajax_wpcd_get_taxonomy_terms_action', 'wpcd_get_taxonomy_terms');
+add_action('wp_ajax_nopriv_wpcd_get_taxonomy_terms_action', 'wpcd_get_taxonomy_terms');
+
+//add custom css in the in the editor
+function wpcd_block_editor_css(){
+    wp_enqueue_style(
+        'wpcd_editor_styles',
+        plugins_url( '/css/wpcd_block_editor_styles.css', __FILE__ ),
+        array()
+     );
+  }
+  add_action( 'enqueue_block_editor_assets', 'wpcd_block_editor_css' );
 ?>

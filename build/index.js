@@ -372,9 +372,10 @@ var edit = function edit(props) {
   }))));
   return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: props.className
-  }, inspectorControls, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    id: "child_cat_dropdown"
-  }, "The category dropdown should show here."))];
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_1___default.a, {
+    block: "gcs/wp-category-dropdown",
+    attributes: props.attributes
+  }), inspectorControls)];
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (edit);
@@ -411,7 +412,7 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('gcs
   title: 'WP Category Dropdown',
   icon: 'sort',
   category: 'widgets',
-  description: 'This block displays the parent and child categories in a dropdown.',
+  description: 'This block displays the child categories based on the selected parent category.',
   example: {},
   attributes: {
     orderby: {

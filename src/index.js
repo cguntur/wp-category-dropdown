@@ -13,7 +13,7 @@ registerBlockType( 'gcs/wp-category-dropdown', {
     title: 'WP Category Dropdown',
     icon: 'sort',
     category: 'widgets',
-    description: 'This block displays the parent and child categories in a dropdown.',
+    description: 'This block displays the child categories based on the selected parent category.',
     example: {
     },
     attributes: {
