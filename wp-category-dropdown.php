@@ -3,7 +3,7 @@
 Plugin Name: WordPress Category Dropdown
 Plugin URI: http://www.gcsdesign.com
 Description: The plugin loads sub category dropdown based on the selected parent category
-Version: 1.3
+Version: 1.4
 Author: Chandrika Guntur
 Author URI: http://www.gcsdesign.com
 Plugin URI: https://www.gcsdesign.com/wp_category_dropdown
