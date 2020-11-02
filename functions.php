@@ -32,7 +32,7 @@ add_action('wp_ajax_nopriv_wpcd_get_taxonomies_action', 'wpcd_get_taxonomies');
 
 function wpcd_get_taxonomy_terms(){
     if(isset($_GET['taxonomy'])){
-        $taxonomy = $_GET['taxonomy'];
+        $taxonomy = sanitize_text_field($_GET['taxonomy']);
     }else{
         $taxonomy = "category";
     }
@@ -61,4 +61,20 @@ function wpcd_block_editor_css(){
      );
   }
   add_action( 'enqueue_block_editor_assets', 'wpcd_block_editor_css' );
+
+  function wpcd_get_taxonomy_terms_for_widget(){
+    if(isset($_GET['taxonomy'])){
+        $taxonomy = sanitize_text_field($_GET['taxonomy']);
+    }else{
+        $taxonomy = "category";
+    }
+    $tax_terms = '';
+    $tax_terms = get_terms( array(
+        //'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'hierarchical' => true
+    ) );
+
+    return $tax_terms;
+}
 ?>

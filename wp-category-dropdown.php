@@ -57,7 +57,7 @@ function wpcd_child_category_dropdown( $atts ) {
   wp_enqueue_script( 'jquery' );
   wp_enqueue_script('wpcd-scripts');
 
-	// Set our default attributes
+  	// Set our default attributes
 	extract( shortcode_atts(
 		array(
 		'orderby' => 'name', // options: date, modified, menu_order, rand
@@ -69,7 +69,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'include'	=> '',
 		'default_option_text'	=> __('Parent Category', 'wpcd'),
 		'default_option_sub'	=> __('Child Category', 'wpcd'),
-		'category'	=>	'category'
+        'category'	=>	'category'
 		), $atts )
 	);
 
@@ -89,16 +89,33 @@ function wpcd_child_category_dropdown( $atts ) {
 		'title_li' => '',
 		'name'	=> 'wpcd_parent',
 		'id'	=>	'wpcd_parent',
-		'show_option_none'	=> $default_option_text,
+        'show_option_none'	=> $default_option_text
 	);
 
   $categories = '<p>'. wp_dropdown_categories($args) . '</p>';
 	//This div is hidden and has the default option text for hte sub category dropdown.
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
 	//This hidden div has the taxonomy mentioned in the shortcode.
-	$categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
-	$exclude_cats = implode( ",", $exclude );
-	$include_cats = implode(",",$include);
+    $categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
+    if(isset($exclude)){
+        if(is_array($exclude)){
+            $exclude_cats = implode( ",", $exclude );
+        }else{
+            $exclude_cats = $exclude;
+        }
+    }else{
+        $exclude_cats = '';
+    }
+	if(isset($inlcude)){
+        if(is_array($include)){
+            $include_cats = implode(",",$include);
+        }else{
+            $include_cats = $include;
+        }
+    }else{
+        $include_cats = '';
+    }
+	
 	$categories .= '<div id="exclude">' . $exclude_cats . '</div>';
 	$categories .= '<div id="include">' . $include_cats . '</div>';
 	//This div will show when the Ajax is working. You can also use a gif instead of text.
@@ -111,6 +128,7 @@ function wpcd_child_category_dropdown( $atts ) {
 add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' );
 
 function wpcd_show_child_cat_dropdown(){
+    $response = '';
 	if (isset($_GET['parent_cat'])) {
         $parent_cat = sanitize_text_field($_GET['parent_cat']);
 		$parent_cat = intval($parent_cat);
@@ -193,7 +211,7 @@ function wpcd_show_child_cat_dropdown(){
 			'show_option_none'	=> $child_cat_default_text,
 			'value_field'      => 'slug',
 			'exclude'	=> $child_cats_exclude,
-			'include'	=> $child_cats_include
+            'include'	=> $child_cats_include,
 		);
 		if ( $taxonomy == "product_cat" ) {
 			$wc_permalinks = get_option( 'woocommerce_permalinks' );

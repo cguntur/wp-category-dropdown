@@ -44,7 +44,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 			'showcount' => $instance['wpcd_showcount'],
 			'hierarchical' => 1,
 			'hide_empty' => $instance['wpcd_hide_empty'],
-			'exclude' => $exclude_cats,
+            'exclude'   => $instance['wpcd_exclude_category'],
 			'default_option_text'	=> $instance['parent_default_option'],
 			'default_option_sub'	=> $instance['child_default_option'],
 			'category'	=>	$instance['wpcd_select_category']
@@ -146,11 +146,10 @@ class Category_Dropdown_Widget extends WP_Widget {
 		</p>
 		<p>
 			<?php
-			if(isset($instance['wpcd_exclude_category'])){
+			if(isset($instance['wpcd_exclude_category']) && $instance['wpcd_exclude_category'] != '' ){
 				$exclude_cats_array = $instance['wpcd_exclude_category'];
 				if(is_array($exclude_cats_array)){
 					$exclude_cats_string = implode(', ', $exclude_cats_array);
-					//$exclude_cats = "'" . $exclude_cats_string . "'";
 					$exclude_cats = $exclude_cats_string;
 				}else{
 					$exclude_cats = $exclude_cats_array;
@@ -158,7 +157,13 @@ class Category_Dropdown_Widget extends WP_Widget {
 			}else{
 				$exclude_cats_array = '';
 				$exclude_cats = '';
-			}
+            }
+            
+            if(isset($instance['wpcd_select_category']) && $instance['wpcd_select_category'] != ''){
+                $category = $instance['wpcd_select_category'];
+            }else{
+                $category = 'category';
+            }
 			
 			?>
 			<label for="<?php echo $this->get_field_id( 'wpcd_exclude_category' ); ?>"><?php _e( 'Exclude Categories', 'wpcd' ); ?></label><br />
@@ -166,16 +171,13 @@ class Category_Dropdown_Widget extends WP_Widget {
 			$field_id = $this->get_field_id("wpcd_exclude_category");
 			$field_name = $this->get_field_name('wpcd_exclude_category');
 			?>
-			<p class="wpcd_exclude_cat_field_id"><?php echo $field_id; ?></p>
-			<p class="wpcd_exclude_cat_field_name"><?php echo $field_name; ?></p>
+            <?php
+                $tax_terms = wpcd_get_taxonomy_terms_for_widget();
+            ?>
 			<p class="selected_cat_sub">
 				<?php
-				$tax_terms = "<select>";
-				$tax_terms .= "<option>Option 1</option>";
-				$tax_terms .= "<option>Option 2</option>";
-				$tax_terms .= "</select>";
-				//$tax_terms = wpcd_display_tax_terms('category', $field_id, $field_name, $exclude_cats_array);
-				echo $tax_terms;
+				$exclude_select = wpcd_display_tax_terms($category, $field_id, $field_name, $exclude_cats_array);
+				echo $exclude_select;
 				?>
 			</p>
 			<p class="generate_cat_sub"></p>
@@ -218,19 +220,19 @@ function wpcd_widget_exclude_categories(){
 		$exclude_cats = '';
 	}
 	if(isset($_POST['wpcd_exclude_cat_field_id'])){
-		$wpcd_exclude_cat_field_id = $_POST['wpcd_exclude_cat_field_id'];
+		$wpcd_exclude_cat_field_id = sanitize_text_field($_POST['wpcd_exclude_cat_field_id']);
 	}else{
 		$wpcd_exclude_cat_field_id = '';
 	}
 	if(isset($_POST['wpcd_exclude_cat_field_name'])){
-		$wpcd_exclude_cat_field_name = $_POST['wpcd_exclude_cat_field_name'];
+		$wpcd_exclude_cat_field_name = sanitize_text_field($_POST['wpcd_exclude_cat_field_name']);
 	}else{
 		$wpcd_exclude_cat_field_name = '';
-	}
-	//$response = 'Initial Response';
+    }
+    
+	$response = '';
 	if (isset($_POST['selected_cat'])) {
-        //$selected_cat = sanitize_text_field($_POST['selected_cat']);
-		$selected_cat = $_POST['selected_cat'];
+		$selected_cat = sanitize_text_field($_POST['selected_cat']);
 		//If there is a custom category base set, get that from the options
 		if($selected_cat == 'category'){
 			$category_base = get_option('category_base');
@@ -243,9 +245,6 @@ function wpcd_widget_exclude_categories(){
 			$category_base = $wc_permalinks['category_base'];
 			$selected_cat = $category_base;
 		}
-		$response .= "Selected category: " . $selected_cat . "<br />";
-		//$selected_cat = intval($selected_cat);
-		//$response = $selected_cat;
 		$response .= wpcd_display_tax_terms($selected_cat, $wpcd_exclude_cat_field_id,$wpcd_exclude_cat_field_name, $exclude_cats_array);
 	}else{
 		$selected_cat = '';
@@ -259,15 +258,13 @@ add_action("wp_ajax_nopriv_wpcd_widget_exclude_categories", "wpcd_widget_exclude
 
 function wpcd_display_tax_terms($taxonomy, $field_id, $field_name, $exclude_cats_array){
 	$tax_terms ='';
-	$tax_terms .= "Taxonomy: " . $taxonomy . "<br />";
 	$tax_terms .= '<select multiple="multiple" id="'.$field_id.'" class="widefat cat_sub" name="'.$field_name.'[]" type="text">';
-	$tax_terms .= '<option class="wpcd_widget_dropdown_loader">Lodading....</option>';
 	
 	$terms = get_terms( array(
-		'taxonomy' => $taxonomy
-		//'taxonomy' => 'category'
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'hierarchical' => true
 	) );
-	print_r($terms);
 	if ( !empty( $terms ) ){
 		foreach ( $terms as $term ) {
 			$id = $term->term_id;
@@ -280,7 +277,7 @@ function wpcd_display_tax_terms($taxonomy, $field_id, $field_name, $exclude_cats
 			$tax_terms .= '<option value="' . $id . '"' . $selected .'>' . $term->name . '</option>';
 		}
 	}else{
-		$tax_terms .= '<option value="">No categories found</option>';
+		$tax_terms .= '<option value="">' . __('No categories found', 'wpcd') . '</option>';
 	}
 	$tax_terms .= '</select>';
 	return $tax_terms;
