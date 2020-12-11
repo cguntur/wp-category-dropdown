@@ -16,7 +16,15 @@ registerBlockType( 'gcs/wp-category-dropdown', {
     description: 'This block displays the child categories based on the selected parent category.',
     example: {
     },
+    supports: {
+        // Declare support for specific alignment options.
+        align: true
+    },
     attributes: {
+        align: {
+            type: 'string',
+            default: ''
+        },
         orderby:{
             type: 'string',
             default: 'name',

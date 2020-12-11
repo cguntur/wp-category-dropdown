@@ -5,6 +5,10 @@ if ( function_exists( 'register_block_type' ) ) {
 		'gcs/wp-category-dropdown', [
 			'render_callback' => 'wp_cat_dropdown_callback',
 			'attributes'  => array(
+                'align'  => array(
+					'type'  => 'string',
+					'default' => '',
+				),
 				'orderby'  => array(
 					'type'  => 'string',
 					'default' => 'name',
@@ -51,7 +55,9 @@ if ( function_exists( 'register_block_type' ) ) {
 };
 
 function wp_cat_dropdown_callback($attributes){
-	$categories = wpcd_child_category_dropdown($attributes);
+    $categories = '<div class="align'.$attributes['align'].'">';
+    $categories .= wpcd_child_category_dropdown($attributes);
+    $categories .= '</div>';
 	return $categories;
 }
 ?>

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "wp-scripts start",
-    "build": "wp-scripts build"
+    "build": "wp-scripts build",
+    "bundle": "dir-archiver --src . --dest ../wp-category-dropdown.zip --exclude .DS_Store .git .gitattributes .github .gitignore README.md node_modules package-lock.json package.json"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "@wordpress/scripts": "12.1.0"
   },
   "dependencies": {
-    "npm-upgrade": "^2.0.3"
+    "npm-upgrade": "^2.0.3",
+    "dir-archiver": "^1.1.1"
   }
 }

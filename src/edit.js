@@ -152,7 +152,7 @@ const getTerms = (taxonomy) => {
 };
 
 const edit = props => {
-    const { attributes: {orderby, order, showcount, hierarchical, hide_empty, exclude, include, default_option_text, default_option_sub, category}, className, setAttributes, isSelected } = props;
+    const { attributes: {align, orderby, order, showcount, hierarchical, hide_empty, exclude, include, default_option_text, default_option_sub, category}, className, setAttributes, isSelected } = props;
 
     const setTaxonomy = category => {
         props.setAttributes({category, exclude: [], include: []});

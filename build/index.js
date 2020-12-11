@@ -255,6 +255,7 @@ var getTerms = function getTerms(taxonomy) {
 
 var edit = function edit(props) {
   var _props$attributes = props.attributes,
+      align = _props$attributes.align,
       orderby = _props$attributes.orderby,
       order = _props$attributes.order,
       showcount = _props$attributes.showcount,
@@ -414,7 +415,15 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_1__["registerBlockType"])('gcs
   category: 'widgets',
   description: 'This block displays the child categories based on the selected parent category.',
   example: {},
+  supports: {
+    // Declare support for specific alignment options.
+    align: true
+  },
   attributes: {
+    align: {
+      type: 'string',
+      default: ''
+    },
     orderby: {
       type: 'string',
       default: 'name'
