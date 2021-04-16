@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "wp-scripts start",
     "build": "wp-scripts build",
-    "bundle": "dir-archiver --src . --dest ../wp-category-dropdown.zip --exclude .DS_Store .git .gitattributes .github .gitignore README.md node_modules package-lock.json package.json"
+    "bundle": "dir-archiver --src . --dest ../wp-category-dropdown.zip --exclude .DS_Store .git .gitattributes .github .gitignore README.md node_modules package-lock.json package.json .vscode"
   },
   "repository": {
     "type": "git",
