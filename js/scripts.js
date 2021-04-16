@@ -2,7 +2,6 @@ jQuery(document).ready(function($){
   $('#wpcd_child_cat_loader, #child_cat_default_text, #taxonomy, #exclude, #include, #random_id').css("display", "none");
   $("select[name=wpcd_parent]").change(function(){
     var parent_cat = $(this).val();
-    $(this).parent().parent().addClass("Test");
     var random_class = $(this).parent().parent().children("#random_id").text();
     var child_cat_default_text = $("#child_cat_default_text").text();
     var taxonomy = $(this).parent().parent().children("#taxonomy").text();
