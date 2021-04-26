@@ -3,7 +3,7 @@
 Plugin Name: WordPress Category Dropdown
 Plugin URI: http://www.gcsdesign.com
 Description: The plugin loads sub category dropdown based on the selected parent category
-Version: 1.5
+Version: 1.6
 Author: Chandrika Sista
 Author URI: http://www.gcsdesign.com
 Plugin URI: https://www.gcsdesign.com/wp_category_dropdown
@@ -54,9 +54,10 @@ function wpcd_child_category_dropdown( $atts ) {
 
     wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
-  wp_enqueue_script( 'jquery' );
-  wp_enqueue_script('wpcd-scripts');
+    wp_enqueue_script( 'jquery' );
+    wp_enqueue_script('wpcd-scripts');
 
+    $unique_id = uniqid();
   	// Set our default attributes
 	extract( shortcode_atts(
 		array(
@@ -89,6 +90,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		'title_li' => '',
 		'name'	=> 'wpcd_parent',
 		'id'	=>	'wpcd_parent',
+        'class' =>  $unique_id,
         'show_option_none'	=> $default_option_text
 	);
 
@@ -97,6 +99,7 @@ function wpcd_child_category_dropdown( $atts ) {
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
 	//This hidden div has the taxonomy mentioned in the shortcode.
     $categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
+    $categories .= '<div id="random_id">' . $unique_id . '</div>';
     if(isset($exclude)){
         if(is_array($exclude)){
             $exclude_cats = implode( ",", $exclude );
@@ -121,9 +124,8 @@ function wpcd_child_category_dropdown( $atts ) {
 	//This div will show when the Ajax is working. You can also use a gif instead of text.
 	$categories .= '<div id="wpcd_child_cat_loader">Loading....</div>';
 	//This is the div where the child category dropdown is populated
-	$categories .= '<div id="child_cat_dropdown"></div>';
+	$categories .= '<div id="child_cat_dropdown" class="'.$unique_id.'"></div>';
   return $categories;
-	//$first_call = FALSE;
 }
 add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' );
 
