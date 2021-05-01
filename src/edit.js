@@ -196,6 +196,7 @@ const edit = props => {
                         onChange={ ( nextValue ) =>
                             setAttributes( { showcount:nextValue } )
                         }
+                        help={showcount ? __('Show the number of posts in each category for both parent and child categories', 'wpcd') : __('', 'wpcd') }
 					/>
                 </PanelRow>
                 <PanelRow>
@@ -215,6 +216,7 @@ const edit = props => {
                         onChange={ ( nextValue ) =>
                             setAttributes( { hide_empty:nextValue } )
                         }
+                        help={hide_empty ? __('Hides the categories without any posts in parent and child category dropdowns', 'wpcd') : __('All categories are shown in the dropdowns', 'wpcd') }
 					/>
                 </PanelRow>
                 <PanelRow>
