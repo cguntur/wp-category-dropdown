@@ -122,7 +122,6 @@ class Category_Dropdown_Widget extends WP_Widget {
 				<option <?php selected( $instance['wpcd_hide_empty'], '0'); ?> value="0"><?php _e('No', 'wpcd');?></option>
 			</select>
 		</p>
-
 		<p>
 			<label for="<?php echo $this->get_field_id( 'wpcd_select_category' ); ?>"><?php _e( 'Select a Category', 'wpcd' ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_select_category'); ?>" class="widefat wpcd_select_category" name="<?php echo $this->get_field_name('wpcd_select_category'); ?>" type="text">

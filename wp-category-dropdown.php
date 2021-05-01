@@ -94,12 +94,15 @@ function wpcd_child_category_dropdown( $atts ) {
         'show_option_none'	=> $default_option_text
 	);
 
-  $categories = '<p>'. wp_dropdown_categories($args) . '</p>';
+	$categories = '<div class="wpcd_dropdown_categories"';
+  	$categories .= '<p>'. wp_dropdown_categories($args) . '</p>';
 	//This div is hidden and has the default option text for hte sub category dropdown.
 	$categories .= '<div id="child_cat_default_text">' . $default_option_sub . '</div>';
 	//This hidden div has the taxonomy mentioned in the shortcode.
     $categories .= '<div id="taxonomy">' . $taxonomy . '</div>';
     $categories .= '<div id="random_id">' . $unique_id . '</div>';
+	$categories .= '<div id="hide_empty">'.$hide_empty.'</div>';
+	$categories .= '<div id="show_count">'.$showcount.'</div>';
     if(isset($exclude)){
         if(is_array($exclude)){
             $exclude_cats = implode( ",", $exclude );
@@ -125,6 +128,7 @@ function wpcd_child_category_dropdown( $atts ) {
 	$categories .= '<div id="wpcd_child_cat_loader">Loading....</div>';
 	//This is the div where the child category dropdown is populated
 	$categories .= '<div id="child_cat_dropdown" class="'.$unique_id.'"></div>';
+	$categories .= '</div>';
   return $categories;
 }
 add_shortcode( 'wpcd_child_categories_dropdown', 'wpcd_child_category_dropdown' );
@@ -155,6 +159,14 @@ function wpcd_show_child_cat_dropdown(){
 
 	if(isset($_GET['child_cats_include'])){
 		$child_cats_include = sanitize_text_field($_GET['child_cats_include']);
+	}
+
+	if(isset($_GET['hide_empty'])){
+		$hide_empty = sanitize_text_field( $_GET['hide_empty'] );
+	}
+
+	if(isset($_GET['show_count'])){
+		$show_count = sanitize_text_field( $_GET['show_count'] );
 	}
 
     $parent_category = get_term($parent_cat, $taxonomy);
@@ -202,9 +214,9 @@ function wpcd_show_child_cat_dropdown(){
 			'taxonomy' => $taxonomy,
 			'orderby' => 'name',
 			'order' => 'ASC',
-			'show_count' => 0,
+			'show_count' => $show_count,
 			'hierarchical' => 1,
-			'hide_empty' => 0,
+			'hide_empty' => $hide_empty,
 			'child_of' => $parent_cat,
             'echo' => 0,
             'depth' => 1,

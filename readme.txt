@@ -51,6 +51,7 @@ Yes! It works with custom taxonomies.
 == Changelog ==
 = 1.6 =
 * Multiple dropdowns can be added on the same page 
+* The hide empty categories and the show count options now work for both parent and child category dropdowns
 
 = 1.5 =
 * Added align support to the category dropdown block 
