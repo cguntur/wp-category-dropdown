@@ -33,6 +33,7 @@ jQuery(document).ready(function($){
       },
       success: function(response){
         $(child_cat_dropdown_selector).html(response);
+        console.log(response);
         $(child_cat_dropdown_selector).find("script").each(function(i) {
             eval($(this).text());
         });

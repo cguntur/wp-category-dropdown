@@ -32,21 +32,23 @@ import { withState } from '@wordpress/compose';
 
 
 const orderbyOptions = [
-    { label: 'Title', value: 'title' },
-    { label: 'Date', value: 'date' },
-    { label: 'Menu Order', value: 'menu_order' },
-    { label: 'Random', value: 'rand' },
- ];
+    { label: 'Title', value: 'title' },
+    { label: 'Date', value: 'date' },
+    { label: 'Menu Order', value: 'menu_order' },
+    { label: 'Random', value: 'rand' },
+ ];
 
 const orderOptions = [
-    { label: 'Ascending', value: 'asc' },
-    { label: 'Descending', value: 'desc' },
+    { label: 'Ascending', value: 'asc' },
+    { label: 'Descending', value: 'desc' },
 ];
+console.log("test" + ajaxurl);
+//var fetchUrlAction = wpcdajax.ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
+var fetchUrlAction = ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
 
-var fetchUrlAction = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
 
 const taxonomyList = [
-    { label: 'Categories', value: 'category' }
+    { label: 'Categories', value: 'category' }
 ];
 
 wp.apiFetch({url: fetchUrlAction}).then(response => {
@@ -78,7 +80,8 @@ const allTerms = {};
 //     {label: "Loading...", value: null}
 // ];
 
-var taxTerms = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
+//var taxTerms = wpcdajax.ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
+var taxTerms = ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
 wp.apiFetch({url: taxTerms}).then(response => {
     //setTimeout(() => {
         jQuery.each( response, function( key, val ) {
@@ -126,24 +129,6 @@ wp.apiFetch({path: "/wp/v2/categories?per_page=100"}).then(posts => {
 */
 
 const getTerms = (taxonomy) => {
-    /*if(taxonomy == "category"){
-        taxonomy = "categories";
-    }else if(taxonomy == "post_tag"){
-        taxonomy = "tags";
-    }
-    var taxTerms = wpAjax.wpurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action&taxonomy='+taxonomy;
-    console.log(taxTerms);
-    wp.apiFetch({url: taxTerms}).then(response => {
-        taxonomyTerms.length = 0;
-        jQuery.each( response, function( key, val ) {
-            taxonomyTerms.push({label: val.name, value: val.term_id});
-        });
-        console.log(taxonomyTerms);
-    }).catch( 
-    
-    )
-    //return taxonomyTerms;
-    */
    if (Array.isArray(allTerms[taxonomy])) {
        return allTerms[taxonomy];
    } else {

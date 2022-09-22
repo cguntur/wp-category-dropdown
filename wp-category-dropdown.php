@@ -3,7 +3,7 @@
 Plugin Name: WordPress Category Dropdown
 Plugin URI: http://www.gcsdesign.com
 Description: The plugin loads sub category dropdown based on the selected parent category
-Version: 1.6
+Version: 1.7
 Author: Chandrika Sista
 Author URI: http://www.gcsdesign.com
 Plugin URI: https://www.gcsdesign.com/wp_category_dropdown
@@ -41,7 +41,6 @@ function wp_cat_dropdown_block_scripts() {
 		$asset_file['version']
 	);
 	wp_enqueue_script('wp-cat-drop-blocks');
-	//wp_localize_script( 'bd-blocks', 'wpAjax', array( 'wpurl' => get_bloginfo('wpurl') ) );
 }
 add_action( 'enqueue_block_editor_assets', 'wp_cat_dropdown_block_scripts', 30 );
 
@@ -50,7 +49,7 @@ add_action( 'enqueue_block_editor_assets', 'wp_cat_dropdown_block_scripts', 30 )
 function wpcd_child_category_dropdown( $atts ) {
 	//header("Content-Type: application/javascript");
 	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery'), null );
-	wp_localize_script("wpcd-scripts", 'wpcdHome', array('homeUrl' => esc_url(home_url() ) ) );
+	//wp_localize_script("wpcd-scripts", 'wpcdHome', array('homeUrl' => esc_url(home_url() ) ) );
 
     wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
@@ -173,6 +172,7 @@ function wpcd_show_child_cat_dropdown(){
 	$parent_cat_slug = $parent_category->slug;
 
 	$cat_has_child = get_term_children($parent_cat, $taxonomy);
+	$permalink_structure = get_option( 'siteurl' );
 
 	if($parent_cat == ''){
 		$response = "No category selected";
@@ -190,7 +190,6 @@ function wpcd_show_child_cat_dropdown(){
                 $taxonomy = $category_base;
             }
         }
-
 		?>
 		<script type="javascript">
 		<?php
@@ -200,7 +199,6 @@ function wpcd_show_child_cat_dropdown(){
 			}else{
 				$cat_url = get_term_link($parent_cat_slug);
 			}*/
-
 			?>
 			var cat_url_base = "<?php echo $cat_url; ?>";
 			var current_cat_slug = "<?php echo $parent_cat_slug; ?>";
@@ -240,7 +238,7 @@ function wpcd_show_child_cat_dropdown(){
                 $taxonomy = $category_base;
             }
         }
-
+		
 		$cat_url = home_url() . "/" . $taxonomy;
 		$response = wp_dropdown_categories($args);
 		?>

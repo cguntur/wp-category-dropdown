@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/cguntur/wp-category-dropdown#readme",
   "devDependencies": {
-    "@wordpress/scripts": "12.1.0"
+    "@wordpress/scripts": "24.1.0"
   },
   "dependencies": {
-    "npm-upgrade": "^2.0.3",
-    "dir-archiver": "^1.1.1"
+    "npm-upgrade": "^3.1.0",
+    "dir-archiver": "^1.2.0"
   }
 }
