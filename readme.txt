@@ -4,7 +4,7 @@ Tags: WordPress Category Dropdown, child category dropdown, Ajax WordPress categ
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 1.7
+Stable tag: 1.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,9 @@ Yes! It works with custom taxonomies.
 2. Dropdown widget display on the front end
 
 == Changelog ==
+= 1.8 =
+* Fixed the issue of default text going to 404 page 
+
 = 1.7 =
 * Updated to work with WP 6.0
 
