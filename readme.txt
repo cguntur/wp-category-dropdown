@@ -2,7 +2,7 @@
 Contributors: cguntur
 Tags: WordPress Category Dropdown, child category dropdown, Ajax WordPress category, Parent and Child Categories
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.3
 Requires PHP: 7.0
 Stable tag: 1.8
 License: GPLv3
