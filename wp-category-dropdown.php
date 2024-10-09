@@ -8,6 +8,8 @@ Author: Chandrika Sista
 Author URI: http://www.gcsdesign.com
 Plugin URI: https://www.gcsdesign.com/wp-category-dropdown
 Text Domain: wp-category-dropdown
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 /**

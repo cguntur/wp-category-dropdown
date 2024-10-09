@@ -1,14 +1,14 @@
-=== WP Category Dropdown ===
+=== Category Dropdown by GCS Design ===
 Contributors: cguntur
 Tags: WordPress Category Dropdown, child category dropdown, Ajax WordPress category, Parent and Child Categories
 Requires at least: 5.0
-Tested up to: 6.3
+Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.8
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Stable tag: 1.9
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Display a parent and child categories in a dropdown. The child categories can be shown based on the parent category selected. Works with custom taxonomies and WooCommerce product categories.
+Display a parent and child categories in a dropdown. Works with custom taxonomies and WooCommerce product categories.
 
 == Description ==
 WP Category Dropdown plugin displays parent and child categories in a dropdown. You can select the parent category and display a dropdown for the child categories of the selected parent. If the selected parent category does not have a child category, you will be automatically directed to the category page.
