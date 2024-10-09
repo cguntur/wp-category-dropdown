@@ -55,7 +55,8 @@ if ( function_exists( 'register_block_type' ) ) {
 };
 
 function wp_cat_dropdown_callback($attributes){
-    $categories = '<div class="align'.$attributes['align'].'">';
+	$align = $attributes['align'];
+    $categories = '<div class="align'.esc_attr($align).'">';
     $categories .= wpcd_child_category_dropdown($attributes);
     $categories .= '</div>';
 	return $categories;

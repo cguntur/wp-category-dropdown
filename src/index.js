@@ -6,9 +6,9 @@ import edit from './edit';
 
 import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
-import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
-import { setState } from '@wordpress/compose';
- 
+//import { dateI18n, format } from '@wordpress/date';
+//import { setState } from '@wordpress/compose';
+
 registerBlockType( 'gcs/wp-category-dropdown', {
     title: 'WP Category Dropdown',
     icon: 'sort',
@@ -20,10 +20,10 @@ registerBlockType( 'gcs/wp-category-dropdown', {
         // Declare support for specific alignment options.
         align: true
     },
-    attributes: {
+    attributes:{
         align: {
             type: 'string',
-            default: ''
+            default: '',
         },
         orderby:{
             type: 'string',

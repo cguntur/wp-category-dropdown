@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: WordPress Category Dropdown
+Plugin Name: Category Dropdown by GCS Design
 Plugin URI: http://www.gcsdesign.com
 Description: The plugin loads sub category dropdown based on the selected parent category
-Version: 1.8
+Version: 1.9
 Author: Chandrika Sista
 Author URI: http://www.gcsdesign.com
-Plugin URI: https://www.gcsdesign.com/wp_category_dropdown
+Plugin URI: https://www.gcsdesign.com/wp-category-dropdown
 Text Domain: wpcd
 */
 
@@ -49,7 +49,6 @@ add_action( 'enqueue_block_editor_assets', 'wp_cat_dropdown_block_scripts', 30 )
 function wpcd_child_category_dropdown( $atts ) {
 	//header("Content-Type: application/javascript");
 	wp_register_script('wpcd-scripts', plugins_url('js/scripts.js', __FILE__), array('jquery'), null );
-	//wp_localize_script("wpcd-scripts", 'wpcdHome', array('homeUrl' => esc_url(home_url() ) ) );
 
     wp_localize_script( 'wpcd-scripts', 'wpcdajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
@@ -73,7 +72,7 @@ function wpcd_child_category_dropdown( $atts ) {
 		), $atts )
 	);
 
-	$taxonomy = $category;
+	$taxonomy = sanitize_text_field($atts['category']);
 	$args = array(
 		'taxonomy' => $taxonomy,
 		'orderby' => $orderby,

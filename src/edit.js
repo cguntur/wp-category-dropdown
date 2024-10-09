@@ -1,4 +1,4 @@
-import ServerSideRender from '@wordpress/server-side-render';
+import ServerSideRender  from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 import { SelectControl, 
     Toolbar,
@@ -25,7 +25,7 @@ import { SelectControl,
         withColors,
         PanelColorSettings,
         getColorClassName
-    } from '@wordpress/editor'
+    } from '@wordpress/block-editor'
     ;
 import { withSelect, widthDispatch } from '@wordpress/data';
 import { withState } from '@wordpress/compose';
@@ -42,8 +42,6 @@ const orderOptions = [
     { label: 'Ascending', value: 'asc' },
     { label: 'Descending', value: 'desc' },
 ];
-console.log("test" + ajaxurl);
-//var fetchUrlAction = wpcdajax.ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
 var fetchUrlAction = ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomies_action';
 
 
@@ -57,33 +55,10 @@ wp.apiFetch({url: fetchUrlAction}).then(response => {
     });
 });
 
-/*
-const TaxonomyListSelectControl = withState( {
-    //size: '50%',
-    category: 'category'
-} )( ( { category, setState } ) => (
-    <SelectControl
-        label="Categories"
-        value={ category }
-        options={ taxonomyList }
-        onChange={ ( category ) => { setState( { category } )
-            //setTerms(category),
-            //console.log(category)
-        } }
-    />
-) );
-*/
-
-//wp.data.select('core').getEntityRecords('taxonomy', 'category');
 const allTerms = {};
-// const taxonomyTerms = [
-//     {label: "Loading...", value: null}
-// ];
 
-//var taxTerms = wpcdajax.ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
 var taxTerms = ajaxurl+'/wp-admin/admin-ajax.php?action=wpcd_get_taxonomy_terms_action';
 wp.apiFetch({url: taxTerms}).then(response => {
-    //setTimeout(() => {
         jQuery.each( response, function( key, val ) {
             if (!allTerms[val.taxonomy]) {
                 allTerms[val.taxonomy] = [];
@@ -91,42 +66,7 @@ wp.apiFetch({url: taxTerms}).then(response => {
             allTerms[val.taxonomy].push({label: val.name, value: val.term_id});
         });    
         console.log(allTerms);
-    //}, 30000);
 });
-
-/*
-const TaxonomyTermsSelectControl = withState( {
-    //size: '50%',
-    category: 'category'
-} )( ( { category, exclude, setState } ) => (
-    <SelectControl
-        multiple
-        label="Exclude Categories"
-        value={ exclude }
-        options={setTerms(category)}
-        onChange={ ( exclude ) => { setState( { exclude } ) } }
-    />
-) );
-*/
-
-/*const TaxonomyTermsSelectControl = (withSelect( function( select, props ) {
-    return {
-        taxonomyTerms: select( 'core' ).getEntityRecords( 'taxonomy', 'category' ),
-    }
-} )) ( function( props ) {
-
-});*/
-
-/*
-wp.apiFetch({path: "/wp/v2/categories?per_page=100"}).then(posts => {
-    taxonomyTerms.length = 0;
-    jQuery.each( posts, function( key, val ) {
-        taxonomyTerms.push({label: val.name, value: val.slug});
-    });
-}).catch( 
-
-);
-*/
 
 const getTerms = (taxonomy) => {
    if (Array.isArray(allTerms[taxonomy])) {
@@ -156,23 +96,23 @@ const edit = props => {
             <PanelBody title={ __( 'Category Dropdown Options' )}>
                 <PanelRow>
                     <SelectControl
-                        label="Order By"
-                        value={orderby}
-                        options= { orderbyOptions }
+                        label="Order By"
+                        value={orderby}
+                        options= { orderbyOptions }
                         onChange={ ( nextValue ) =>
-                            setAttributes( {orderby:  nextValue } )
+                            setAttributes( {orderby: nextValue } )
                         }
-                    />
+                    />
                 </PanelRow>
                 <PanelRow>
                     <SelectControl
-                        label="Order"
-                        value={order}
-                        options= { orderOptions }
+                        label="Order"
+                        value={order}
+                        options= { orderOptions }
                         onChange={ ( nextValue ) =>
-                            setAttributes( {order:  nextValue } )
+                            setAttributes( {order: nextValue } )
                         }
-                    />
+                    />
                 </PanelRow>
                 <PanelRow>
                     <ToggleControl
