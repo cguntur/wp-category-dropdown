@@ -59,11 +59,11 @@ registerBlockType( 'gcs/wp-category-dropdown', {
         },
         default_option_text:{
             type: 'string',
-            default: __('Parent Category', 'wpcd'),
+            default: __('Parent Category', GCSCD_TXT_DOMAIN),
         },
         default_option_sub:{
             type: 'string',
-            default: __('Child Category', 'wpcd'),
+            default: __('Child Category', GCSCD_TXT_DOMAIN),
         },
     },
     edit: edit,

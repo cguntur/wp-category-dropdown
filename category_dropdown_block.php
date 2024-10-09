@@ -43,11 +43,11 @@ if ( function_exists( 'register_block_type' ) ) {
 				),
 				'default_option_text'  => array(
 					'type'  => 'string',
-					'default' =>  __('Parent Category', 'wpcd'),
+					'default' =>  __('Parent Category', GCSCD_TXT_DOMAIN),
 				),
 				'default_option_sub'  => array(
 					'type'  => 'string',
-					'default' =>   __('Child Category', 'wpcd'),
+					'default' =>   __('Child Category', GCSCD_TXT_DOMAIN),
 				),
 			)
 		]

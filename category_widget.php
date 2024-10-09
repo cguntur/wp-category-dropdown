@@ -9,7 +9,7 @@ class Category_Dropdown_Widget extends WP_Widget {
 	public function __construct() {
 		$widget_ops = array(
 		'classname' => 'wcpd_category_dropdown_widget',
-		'description' => __('A widget to display parent and child categories in a dropdown.', 'wpcd'),
+		'description' => __('A widget to display parent and child categories in a dropdown.', GCSCD_TXT_DOMAIN),
 	);
 	parent::__construct( 'wpcd_category_dropdown_widget', 'Category Dropdown Widget', $widget_ops );
 	}
@@ -60,9 +60,9 @@ class Category_Dropdown_Widget extends WP_Widget {
 	public function form( $instance ) {
 		/* Set up some default widget settings. */
 		$defaults = array(
-			'title' => __( 'Categories', 'wpcd' ),
-			'parent_default_option' => __('Select a Parent Category', 'wpcd'),
-			'child_default_option' => __('Select a Child Category', 'wpcd'),
+			'title' => __( 'Categories', GCSCD_TXT_DOMAIN ),
+			'parent_default_option' => __('Select a Parent Category', GCSCD_TXT_DOMAIN),
+			'child_default_option' => __('Select a Child Category', GCSCD_TXT_DOMAIN),
 			'wpcd_cat_orderby'		=> 'name',
 			'wpcd_cat_order'			=> 'ASC',
 			'wpcd_showcount'			=>	0,
@@ -80,17 +80,17 @@ class Category_Dropdown_Widget extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'parent_default_option' ); ?>"><?php _e( 'Default option text for the parent category', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'parent_default_option' ); ?>"><?php _e( 'Default option text for the parent category', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<input id="<?php echo $this->get_field_id( 'parent_default_option' ); ?>" class="widefat" type="text" name="<?php echo $this->get_field_name( 'parent_default_option' ); ?>" value="<?php echo $instance['parent_default_option']; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'child_default_option' ); ?>"><?php _e( 'Default option text for the child category', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'child_default_option' ); ?>"><?php _e( 'Default option text for the child category', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<input id="<?php echo $this->get_field_id( 'child_default_option' ); ?>" class="widefat" type="text" name="<?php echo $this->get_field_name( 'child_default_option' ); ?>" value="<?php echo $instance['child_default_option']; ?>" />
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'wpcd_cat_orderby' ); ?>"><?php _e( 'Order By', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'wpcd_cat_orderby' ); ?>"><?php _e( 'Order By', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_cat_orderby'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_cat_orderby'); ?>" type="text">
 				<option <?php selected( $instance['wpcd_cat_orderby'], 'name'); ?> value="name">Name</option>
 				<option <?php selected( $instance['wpcd_cat_orderby'], 'date'); ?> value="date">Date</option>
@@ -100,32 +100,32 @@ class Category_Dropdown_Widget extends WP_Widget {
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'wpcd_cat_order' ); ?>"><?php _e( 'Order', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'wpcd_cat_order' ); ?>"><?php _e( 'Order', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_cat_order'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_cat_order'); ?>" type="text">
-				<option <?php selected( $instance['wpcd_cat_order'], 'ASC'); ?> value="ASC"><?php _e('ASC', 'wpcd');?></option>
-				<option <?php selected( $instance['wpcd_cat_order'], 'DESC'); ?> value="DESC"><?php _e('DESC', 'wpcd');?></option>
+				<option <?php selected( $instance['wpcd_cat_order'], 'ASC'); ?> value="ASC"><?php _e('ASC', GCSCD_TXT_DOMAIN);?></option>
+				<option <?php selected( $instance['wpcd_cat_order'], 'DESC'); ?> value="DESC"><?php _e('DESC', GCSCD_TXT_DOMAIN);?></option>
 			</select>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'wpcd_showcount' ); ?>"><?php _e( 'Show the number of posts in the category', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'wpcd_showcount' ); ?>"><?php _e( 'Show the number of posts in the category', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_showcount'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_showcount'); ?>">
-				<option <?php selected( $instance['wpcd_showcount'], '1'); ?> value="1"><?php _e('Yes', 'wpcd');?></option>
-				<option <?php selected( $instance['wpcd_showcount'], '0'); ?> value="0"><?php _e('No', 'wpcd');?></option>
+				<option <?php selected( $instance['wpcd_showcount'], '1'); ?> value="1"><?php _e('Yes', GCSCD_TXT_DOMAIN);?></option>
+				<option <?php selected( $instance['wpcd_showcount'], '0'); ?> value="0"><?php _e('No', GCSCD_TXT_DOMAIN);?></option>
 			</select>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'wpcd_hide_empty' ); ?>"><?php _e( 'Hide the categories without any posts', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'wpcd_hide_empty' ); ?>"><?php _e( 'Hide the categories without any posts', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_hide_empty'); ?>" class="widefat" name="<?php echo $this->get_field_name('wpcd_hide_empty'); ?>">
-				<option <?php selected( $instance['wpcd_hide_empty'], '1'); ?> value="1"><?php _e('Yes', 'wpcd');?></option>
-				<option <?php selected( $instance['wpcd_hide_empty'], '0'); ?> value="0"><?php _e('No', 'wpcd');?></option>
+				<option <?php selected( $instance['wpcd_hide_empty'], '1'); ?> value="1"><?php _e('Yes', GCSCD_TXT_DOMAIN);?></option>
+				<option <?php selected( $instance['wpcd_hide_empty'], '0'); ?> value="0"><?php _e('No', GCSCD_TXT_DOMAIN);?></option>
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'wpcd_select_category' ); ?>"><?php _e( 'Select a Category', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'wpcd_select_category' ); ?>"><?php _e( 'Select a Category', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<select id="<?php echo $this->get_field_id('wpcd_select_category'); ?>" class="widefat wpcd_select_category" name="<?php echo $this->get_field_name('wpcd_select_category'); ?>" type="text">
-				<option <?php selected($instance['wpcd_select_category'], 'category'); ?> value="category"><?php _e('Categories', 'wpcd'); ?></option>
+				<option <?php selected($instance['wpcd_select_category'], 'category'); ?> value="category"><?php _e('Categories', GCSCD_TXT_DOMAIN); ?></option>
 				<?php
 					$args=array('public'   => true, '_builtin'	=> false, 'show_tagcloud'	=> true);
 					$output = 'objects';
@@ -165,7 +165,7 @@ class Category_Dropdown_Widget extends WP_Widget {
             }
 			
 			?>
-			<label for="<?php echo $this->get_field_id( 'wpcd_exclude_category' ); ?>"><?php _e( 'Exclude Categories', 'wpcd' ); ?></label><br />
+			<label for="<?php echo $this->get_field_id( 'wpcd_exclude_category' ); ?>"><?php _e( 'Exclude Categories', GCSCD_TXT_DOMAIN ); ?></label><br />
 			<?php
 			$field_id = $this->get_field_id("wpcd_exclude_category");
 			$field_name = $this->get_field_name('wpcd_exclude_category');
@@ -276,7 +276,7 @@ function wpcd_display_tax_terms($taxonomy, $field_id, $field_name, $exclude_cats
 			$tax_terms .= '<option value="' . $id . '"' . $selected .'>' . $term->name . '</option>';
 		}
 	}else{
-		$tax_terms .= '<option value="">' . __('No categories found', 'wpcd') . '</option>';
+		$tax_terms .= '<option value="">' . __('No categories found', GCSCD_TXT_DOMAIN) . '</option>';
 	}
 	$tax_terms .= '</select>';
 	return $tax_terms;

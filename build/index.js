@@ -154,21 +154,21 @@ const edit = props => {
     onChange: nextValue => setAttributes({
       showcount: nextValue
     }),
-    help: showcount ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Show the number of posts in each category for both parent and child categories', 'wpcd') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('', 'wpcd')
+    help: showcount ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Show the number of posts in each category for both parent and child categories', GCSCD_TXT_DOMAIN) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('', GCSCD_TXT_DOMAIN)
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Show the categories in a hierarchy'),
     checked: hierarchical,
     onChange: nextValue => setAttributes({
       hierarchical: nextValue
     }),
-    help: hierarchical ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Shows only the parent categories in the first dropdown', 'wpcd') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Shows all the categories in the first dropdown', 'wpcd')
+    help: hierarchical ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Shows only the parent categories in the first dropdown', GCSCD_TXT_DOMAIN) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Shows all the categories in the first dropdown', GCSCD_TXT_DOMAIN)
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Hide the emtpy categories'),
     checked: hide_empty,
     onChange: nextValue => setAttributes({
       hide_empty: nextValue
     }),
-    help: hide_empty ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Hides the categories without any posts in parent and child category dropdowns', 'wpcd') : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('All categories are shown in the dropdowns', 'wpcd')
+    help: hide_empty ? (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Hides the categories without any posts in parent and child category dropdowns', GCSCD_TXT_DOMAIN) : (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('All categories are shown in the dropdowns', GCSCD_TXT_DOMAIN)
   })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
     label: "Categories",
     value: category,
@@ -429,11 +429,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     default_option_text: {
       type: 'string',
-      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Parent Category', 'wpcd')
+      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Parent Category', GCSCD_TXT_DOMAIN)
     },
     default_option_sub: {
       type: 'string',
-      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Child Category', 'wpcd')
+      default: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Child Category', GCSCD_TXT_DOMAIN)
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_0__["default"],

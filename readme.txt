@@ -49,6 +49,10 @@ Yes! It works with custom taxonomies.
 2. Dropdown widget display on the front end
 
 == Changelog ==
+= 1.9 =
+* FIxed the Cross-Site Scripting issue caused by the align parameter in the block
+* Changed the name of the plugin to remove the 'WP' from the name
+
 = 1.8 =
 * Fixed the issue of default text going to 404 page 
 

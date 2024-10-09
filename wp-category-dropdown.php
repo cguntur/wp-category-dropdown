@@ -7,8 +7,14 @@ Version: 1.9
 Author: Chandrika Sista
 Author URI: http://www.gcsdesign.com
 Plugin URI: https://www.gcsdesign.com/wp-category-dropdown
-Text Domain: wpcd
+Text Domain: wp-category-dropdown
 */
+
+/**
+ * Define constants
+ */
+define( 'GCSCD_TXT_DOMAIN', 'wp-category-dropdown' );
+
 
 //Required Files
 require_once( plugin_dir_path( __FILE__ ) . 'required_files.php' );
@@ -25,7 +31,7 @@ function wpcd_plugin_action_links( $links ) {
   //Check transient. If it is available, display the settings and license link
   if(get_transient('wpcd_active')){
     $docs_url = "https://www.gcsdesign.com/wp-category-dropdown/";
-    $docs_link = '<a href="' . $docs_url . '" target="_blank">' . __('Documentation', 'wpcd') . '</a>';
+    $docs_link = '<a href="' . $docs_url . '" target="_blank">' . __('Documentation', GCSCD_TXT_DOMAIN) . '</a>';
     array_unshift( $links, $docs_link );
   }
   return $links;
@@ -66,8 +72,8 @@ function wpcd_child_category_dropdown( $atts ) {
 		'hide_empty' => 1, //can be 0
 		'exclude' => '',
 		'include'	=> '',
-		'default_option_text'	=> __('Parent Category', 'wpcd'),
-		'default_option_sub'	=> __('Child Category', 'wpcd'),
+		'default_option_text'	=> __('Parent Category', GCSCD_TXT_DOMAIN),
+		'default_option_sub'	=> __('Child Category', GCSCD_TXT_DOMAIN),
         'category'	=>	'category'
 		), $atts )
 	);

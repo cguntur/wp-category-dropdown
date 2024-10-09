@@ -121,7 +121,7 @@ const edit = props => {
                         onChange={ ( nextValue ) =>
                             setAttributes( { showcount:nextValue } )
                         }
-                        help={showcount ? __('Show the number of posts in each category for both parent and child categories', 'wpcd') : __('', 'wpcd') }
+                        help={showcount ? __('Show the number of posts in each category for both parent and child categories', GCSCD_TXT_DOMAIN) : __('', GCSCD_TXT_DOMAIN) }
 					/>
                 </PanelRow>
                 <PanelRow>
@@ -131,7 +131,7 @@ const edit = props => {
                         onChange={ ( nextValue ) =>
                             setAttributes( { hierarchical:nextValue } )
                         }
-                        help={ hierarchical ? __('Shows only the parent categories in the first dropdown', 'wpcd') : __('Shows all the categories in the first dropdown', 'wpcd') }
+                        help={ hierarchical ? __('Shows only the parent categories in the first dropdown', GCSCD_TXT_DOMAIN) : __('Shows all the categories in the first dropdown', GCSCD_TXT_DOMAIN) }
 					/>
                 </PanelRow>
                 <PanelRow>
@@ -141,7 +141,7 @@ const edit = props => {
                         onChange={ ( nextValue ) =>
                             setAttributes( { hide_empty:nextValue } )
                         }
-                        help={hide_empty ? __('Hides the categories without any posts in parent and child category dropdowns', 'wpcd') : __('All categories are shown in the dropdowns', 'wpcd') }
+                        help={hide_empty ? __('Hides the categories without any posts in parent and child category dropdowns', GCSCD_TXT_DOMAIN) : __('All categories are shown in the dropdowns', GCSCD_TXT_DOMAIN) }
 					/>
                 </PanelRow>
                 <PanelRow>
