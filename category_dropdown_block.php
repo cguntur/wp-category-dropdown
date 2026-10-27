@@ -1,4 +1,6 @@
 <?php
+// Register the block on init so translations are not loaded too early (WP 6.7+)
+function wpcd_register_block() {
 if ( function_exists( 'register_block_type' ) ) {
 	// Hook server side rendering into render callback
 	register_block_type(
@@ -52,7 +54,9 @@ if ( function_exists( 'register_block_type' ) ) {
 			)
 		]
 	);
-};
+}
+}
+add_action( 'init', 'wpcd_register_block' );
 
 function wp_cat_dropdown_callback($attributes){
 	$align = $attributes['align'];
